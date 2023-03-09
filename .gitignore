@@ -1,0 +1,27 @@
+.DS_Store
+
+# Buck files
+/buck-cache/
+/buck-out/
+/.buckconfig.local
+/.buckd
+/.lsp.buckd
+/.lsp-buck-out
+/gentest/test.html
+.buck-java11
+
+.gradle
+
+gradle/wrapper/dists/*
+gradle/native/*
+gradle/daemon/*
+gradle/caches/*
+
+# Output files
+build/
+
+# Android Studio/IntelliJ
+.idea
+.idea/libraries
+*.iml
+local.properties
