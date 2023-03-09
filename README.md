@@ -126,3 +126,5 @@ DCG was created by the Kotlin Foundation team @ Meta:
 - [Hui Qin Ng](https://github.com/nghuiqin/),
 - [Nicola Corti](https://github.com/cortinico/)
 
+## License 
+DataClassGenerate is [MIT-licensed](https://github.com/facebookincubator/dataclassgenerate/blob/main/LICENSE).
