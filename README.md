@@ -114,6 +114,20 @@ data class C(val l:Long): SomeSuperClass()
 
 Coming soon
 
+
+## How to use in your project
+
+Coming soon
+
+
+## Compiler compatibility
+
+|  K1 | K2 |
+|-------|-------|
+| 1.5x | N/A |
+| 1.6x | N/A |
+| 1.7x | 1.7.21 + `-Xuse-k2` |
+
 ## Public talks
 - [FOSDEM'22. DataClassGenerate. Shrinking Kotlin data classes](https://archive.fosdem.org/2022/schedule/event/dataclassgenerate_shrinking_kotlin_data_classes/)
 - [Droidcon'21. Kotlin Adoption at Scale](https://www.droidcon.com/2021/11/17/kotlin-adoption-at-scale/)
@@ -126,5 +140,5 @@ DCG was created by the Kotlin Foundation team @ Meta:
 - [Hui Qin Ng](https://github.com/nghuiqin/),
 - [Nicola Corti](https://github.com/cortinico/)
 
-## License 
+## License
 DataClassGenerate is [MIT-licensed](https://github.com/facebookincubator/dataclassgenerate/blob/main/LICENSE).
