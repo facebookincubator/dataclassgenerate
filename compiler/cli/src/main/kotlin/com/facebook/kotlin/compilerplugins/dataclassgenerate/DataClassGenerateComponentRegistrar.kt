@@ -12,8 +12,8 @@ import com.facebook.kotlin.compilerplugins.dataclassgenerate.configuration.Compi
 import com.facebook.kotlin.compilerplugins.dataclassgenerate.configuration.CompilerConfigurationProperties.MODE
 import com.facebook.kotlin.compilerplugins.dataclassgenerate.configuration.DataClassGenerateExt
 import com.facebook.kotlin.compilerplugins.dataclassgenerate.configuration.get
-import com.intellij.mock.MockProject
 import org.jetbrains.kotlin.codegen.extensions.ClassBuilderInterceptorExtension
+import org.jetbrains.kotlin.com.intellij.mock.MockProject
 import org.jetbrains.kotlin.compiler.plugin.ComponentRegistrar
 import org.jetbrains.kotlin.config.CompilerConfiguration
 

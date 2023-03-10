@@ -22,9 +22,9 @@ import com.facebook.kotlin.compilerplugins.dataclassgenerate.visitor.EqualsMetho
 import com.facebook.kotlin.compilerplugins.dataclassgenerate.visitor.HashCodeMethodVisitor
 import com.facebook.kotlin.compilerplugins.dataclassgenerate.visitor.SuperClassInitCallOverrideVisitor
 import com.facebook.kotlin.compilerplugins.dataclassgenerate.visitor.ToStringMethodVisitor
-import com.intellij.psi.PsiElement
 import org.jetbrains.kotlin.codegen.ClassBuilder
 import org.jetbrains.kotlin.codegen.DelegatingClassBuilder
+import org.jetbrains.kotlin.com.intellij.psi.PsiElement
 import org.jetbrains.kotlin.descriptors.annotations.AnnotationDescriptor
 import org.jetbrains.kotlin.psi.KtClass
 import org.jetbrains.kotlin.resolve.jvm.diagnostics.JvmDeclarationOrigin
