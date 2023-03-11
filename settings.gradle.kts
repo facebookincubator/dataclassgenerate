@@ -24,10 +24,16 @@ rootProject.name = "dataclassgenerate"
 
 include(":annotation")
 
-include(":compiler")
+include(":compiler:cli")
+
+include(":compiler:common")
+
+include(":compiler:k1")
+
+include(":compiler:k2")
 
 include(":superclass")
 
-include(":gradleplugin")
+includeBuild("gradleplugin")
 
 include(":sample")

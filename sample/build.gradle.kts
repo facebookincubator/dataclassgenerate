@@ -5,9 +5,27 @@
  * LICENSE file in the root directory of this source tree.
  */
 
-plugins { kotlin("jvm") }
+plugins {
+  kotlin("jvm")
+  id("com.facebook.kotlin.compilerplugins.dataclassgenerate")
+  application
+}
+
+application {
+  mainClass.set(
+      "com.facebook.kotlin.compilerplugins.dataclassgenerate.sample.DataClassGenerateSampleKt")
+}
 
 dependencies {
   implementation(project(":annotation"))
   implementation(project(":superclass"))
+}
+
+configurations.configureEach {
+  resolutionStrategy.dependencySubstitution {
+    substitute(module("com.facebook.kotlin.compilerplugins.dataclassgenerate:annotation"))
+        .using(project(":annotation"))
+    substitute(module("com.facebook.kotlin.compilerplugins.dataclassgenerate:compiler"))
+        .using(project(":compiler:cli"))
+  }
 }

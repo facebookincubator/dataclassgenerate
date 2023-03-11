@@ -5,15 +5,15 @@
  * LICENSE file in the root directory of this source tree.
  */
 
-plugins {
-  kotlin("jvm")
-  kotlin("kapt")
-}
+plugins { kotlin("jvm") }
+
+sourceSets { main { resources { setSrcDirs(listOf("resources")) } } }
 
 dependencies {
+  implementation(project(":compiler:common"))
+  implementation(project(":compiler:k1"))
+  implementation(project(":compiler:k2"))
   compileOnly(libs.kotlin.compilerEmbeddable)
-  implementation(libs.autoService)
-  kapt(libs.autoService.compiler)
 
   testImplementation(libs.kotlin.compilerEmbeddable)
 }
