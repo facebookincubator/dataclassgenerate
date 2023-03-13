@@ -7,6 +7,7 @@
 
 package com.facebook.kotlin.compilerplugins.dataclassgenerate.gradle
 
+import org.gradle.api.Project
 import org.gradle.api.provider.Provider
 import org.jetbrains.kotlin.gradle.plugin.KotlinCompilation
 import org.jetbrains.kotlin.gradle.plugin.KotlinCompilerPluginSupportPlugin
@@ -14,7 +15,11 @@ import org.jetbrains.kotlin.gradle.plugin.SubpluginArtifact
 import org.jetbrains.kotlin.gradle.plugin.SubpluginOption
 
 class DataClassGeneratePlugin : KotlinCompilerPluginSupportPlugin {
-  override fun getCompilerPluginId() = "com.facebook.kotlin.compilerplugins.dataclassgenerate"
+  override fun getCompilerPluginId() = "com.facebook.kotlin.dataclassgenerate"
+
+  override fun apply(target: Project) {
+    target.extensions.create("dataClassGenerate", DataClassGeneratePluginExtension::class.java)
+  }
 
   override fun getPluginArtifact() =
       SubpluginArtifact(
@@ -30,6 +35,16 @@ class DataClassGeneratePlugin : KotlinCompilerPluginSupportPlugin {
     kotlinCompilation.dependencies {
       compileOnly("com.facebook.kotlin.compilerplugins.dataclassgenerate:annotation:1.0.0")
     }
-    return kotlinCompilation.target.project.provider { emptyList() }
+
+    val project = kotlinCompilation.target.project
+    val extension = project.extensions.getByType(DataClassGeneratePluginExtension::class.java)
+
+    return project.provider {
+      listOf(
+          SubpluginOption(key = "enabled", value = extension.enabled.get().toString()),
+          SubpluginOption(key = "mode", value = extension.mode.get().toString()),
+          SubpluginOption(
+              key = "generateSuperClass", value = extension.generateSuperClass.get().toString()))
+    }
   }
 }
