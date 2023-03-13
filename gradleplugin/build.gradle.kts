@@ -27,3 +27,28 @@ gradlePlugin {
     }
   }
 }
+
+val versionDirectory = "$buildDir/generated/version/"
+
+sourceSets { main { java.srcDir(versionDirectory) } }
+
+val pluginVersionTask =
+    tasks.register("pluginVersion") {
+      val outputDir = file(versionDirectory)
+      inputs.property("version", project.property("VERSION_NAME"))
+      outputs.dir(outputDir)
+      doLast {
+        val versionFile =
+            file(
+                "$outputDir/com/facebook/kotlin/compilerplugins/dataclassgenerata/gradle/version.kt")
+        versionFile.parentFile.mkdirs()
+        versionFile.writeText(
+            """// Generated file. Do not edit!
+package com.facebook.kotlin.compilerplugins.dataclassgenerate.gradle
+internal const val dcgVersion = "${project.property("VERSION_NAME")}"
+""",
+            Charsets.UTF_8)
+      }
+    }
+
+tasks.getByName("compileKotlin").dependsOn(pluginVersionTask)

@@ -23,7 +23,7 @@ class DataClassGeneratePlugin : KotlinCompilerPluginSupportPlugin {
 
   override fun getPluginArtifact() =
       SubpluginArtifact(
-          "com.facebook.kotlin.compilerplugins.dataclassgenerate", "compiler", "1.0.0")
+          "com.facebook.kotlin.compilerplugins.dataclassgenerate", "compiler", "$dcgVersion")
 
   override fun isApplicable(kotlinCompilation: KotlinCompilation<*>): Boolean {
     return kotlinCompilation.target.project.plugins.hasPlugin(DataClassGeneratePlugin::class.java)
@@ -33,7 +33,7 @@ class DataClassGeneratePlugin : KotlinCompilerPluginSupportPlugin {
       kotlinCompilation: KotlinCompilation<*>
   ): Provider<List<SubpluginOption>> {
     kotlinCompilation.dependencies {
-      compileOnly("com.facebook.kotlin.compilerplugins.dataclassgenerate:annotation:1.0.0")
+      compileOnly("com.facebook.kotlin.compilerplugins.dataclassgenerate:annotation:$dcgVersion")
     }
 
     val project = kotlinCompilation.target.project
