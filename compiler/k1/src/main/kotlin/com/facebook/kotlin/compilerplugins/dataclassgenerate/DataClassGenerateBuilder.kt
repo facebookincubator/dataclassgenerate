@@ -45,7 +45,11 @@ class DataClassGenerateBuilder(
   override fun getDelegate() = classBuilder
 
   override fun defineClass(
-      origin: PsiElement?,
+      // We don't rely on [PsiElement] here as in K2 it will be [null] in this DCG builder
+      // We provide a corresponding data with a [declarationOrigin] field in this class.
+      // Depending on https://youtrack.jetbrains.com/issue/KT-56814 resolution we should change
+      // K2 behaviour
+      _doNotUseOnlyPassToSuperCall: PsiElement?,
       version: Int,
       access: Int,
       name: String,
@@ -83,7 +87,14 @@ class DataClassGenerateBuilder(
       }
     }
 
-    super.defineClass(origin, version, access, name, signature, effectiveSuperName, interfaces)
+    super.defineClass(
+        _doNotUseOnlyPassToSuperCall,
+        version,
+        access,
+        name,
+        signature,
+        effectiveSuperName,
+        interfaces)
   }
 
   override fun newMethod(
