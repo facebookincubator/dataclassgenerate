@@ -7,7 +7,7 @@
 
 plugins {
   alias(libs.plugins.kotlin)
-  `java-gradle-plugin`
+  id("java-gradle-plugin")
 }
 
 dependencies {
