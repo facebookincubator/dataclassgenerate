@@ -5,7 +5,16 @@
  * LICENSE file in the root directory of this source tree.
  */
 
-plugins { kotlin("jvm") }
+plugins {
+  id("java-library")
+  kotlin("jvm")
+  id("publish")
+}
+
+java {
+  withSourcesJar()
+  withJavadocJar()
+}
 
 dependencies {
   compileOnly(libs.kotlin.compilerEmbeddable)

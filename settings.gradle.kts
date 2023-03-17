@@ -22,18 +22,15 @@ dependencyResolutionManagement {
 
 rootProject.name = "dataclassgenerate"
 
-include(":annotation")
-
-include(":compiler:cli")
-
-include(":compiler:common")
-
-include(":compiler:k1")
-
-include(":compiler:k2")
-
-include(":superclass")
+include(
+    ":annotation",
+    ":compiler:cli",
+    ":compiler:common",
+    ":compiler:k1",
+    ":compiler:k2",
+    ":superclass",
+    ":sample")
 
 includeBuild("gradleplugin")
 
-include(":sample")
+includeBuild("build-logic")
