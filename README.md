@@ -1,3 +1,6 @@
+![DCG Logo](media/logo-full-color.svg#gh-light-mode-only)
+![DCG Logo](media/logo-white.svg#gh-dark-mode-only)
+
 # DataClassGenerate
 _or simply DCG_
 
