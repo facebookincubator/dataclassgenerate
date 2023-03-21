@@ -25,4 +25,15 @@ dependencies {
   compileOnly(libs.kotlin.compilerEmbeddable)
 
   testImplementation(libs.kotlin.compilerEmbeddable)
+  testImplementation(libs.kotlin.stdlib)
+  testImplementation(libs.kotlin.reflect)
+  testImplementation(libs.kotlin.compileTesting)
+  testImplementation(libs.assertj.core)
+  testImplementation(libs.junit)
+  testImplementation(libs.junit)
+  testImplementation(libs.byte.buddyAgent)
+  testImplementation(libs.junit)
+  testImplementation(libs.ow2.asm)
+  testImplementation(libs.ow2.asmUtil)
+  testImplementation(libs.mockito.kotlin)
 }

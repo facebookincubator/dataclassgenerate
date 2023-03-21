@@ -29,7 +29,14 @@ include(
     ":compiler:k1",
     ":compiler:k2",
     ":superclass",
-    ":sample")
+    ":sample",
+    ":examples:explicit",
+    ":examples:implicit",
+    ":examples:innerclass",
+    ":examples:nosuperclass",
+    ":examples:optout",
+    ":examples:strict",
+    ":examples:superclass")
 
 includeBuild("gradleplugin")
 
