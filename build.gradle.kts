@@ -15,7 +15,10 @@ plugins {
 }
 
 subprojects {
-  repositories { mavenCentral() }
+  repositories { 
+    google()
+    mavenCentral() 
+  }
 
   tasks.withType<KotlinCompile>().configureEach {
     kotlinOptions.jvmTarget = JavaVersion.VERSION_1_8.toString()
