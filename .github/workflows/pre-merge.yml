@@ -14,9 +14,30 @@ jobs:
     steps:
       - name: Checkout Repo
         uses: actions/checkout@v3
+      - name: Configure JDK
+        uses: actions/setup-java@v3
+        with:
+          distribution: 'zulu'
+          java-version: '11'
       - name: Cache Gradle Caches
         uses: gradle/gradle-build-action@v2
       - name: Build the Gradle Plugin
         run: ./gradlew -p gradleplugin build
       - name: Build the DCG
         run: ./gradlew build
+      - name: Run DCG cli tests
+        run: ./gradlew :compiler:cli:test
+      - name: Run DCG explicit mode tests
+        run: ./gradlew :examples:explicit:test
+      - name: Run DCG implicit mode tests
+        run: ./gradlew :examples:implicit:test
+      - name: Run DCG strict mode tests
+        run: ./gradlew :examples:strict:test
+      - name: Run DCG superclass enabled tests
+        run: ./gradlew :examples:superclass:test
+      - name: Run DCG superclass disabled tests
+        run: ./gradlew :examples:nosuperclass:test
+      - name: Run DCG disabled tests
+        run: ./gradlew :examples:optout:test
+      - name: Run DCG inner class tests
+        run: ./gradlew :examples:innerclass:test
