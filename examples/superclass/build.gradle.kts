@@ -18,9 +18,6 @@ dataClassGenerate {
 }
 
 dependencies {
-  implementation(project(":annotation"))
-  implementation(project(":superclass"))
-
   testImplementation(libs.junit)
   testImplementation(libs.assertj.core)
 }

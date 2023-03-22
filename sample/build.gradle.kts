@@ -16,11 +16,6 @@ application {
       "com.facebook.kotlin.compilerplugins.dataclassgenerate.sample.DataClassGenerateSampleKt")
 }
 
-dependencies {
-  implementation(project(":annotation"))
-  implementation(project(":superclass"))
-}
-
 configurations.configureEach {
   resolutionStrategy.dependencySubstitution {
     substitute(module("com.facebook.kotlin.compilerplugins.dataclassgenerate:annotation"))

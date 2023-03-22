@@ -26,8 +26,6 @@ dataClassGenerate {
 }
 
 dependencies {
-  implementation(project(":annotation"))
-  implementation(project(":superclass"))
   implementation(libs.kotlin.parcelizeRuntime)
   implementation(libs.kotlin.serializationCoreJvm)
   implementation(libs.kotlin.serializationJsonJvm)

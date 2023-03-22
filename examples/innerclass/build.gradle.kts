@@ -11,8 +11,6 @@ plugins {
 }
 
 dependencies {
-  implementation(project(":annotation"))
-
   testImplementation(libs.junit)
   testImplementation(libs.assertj.core)
 }

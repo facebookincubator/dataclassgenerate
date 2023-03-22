@@ -15,8 +15,6 @@ plugins {
 dataClassGenerate { mode.set(DataClassGenerateMode.IMPLICIT) }
 
 dependencies {
-  implementation(project(":annotation"))
-
   testImplementation(libs.junit)
   testImplementation(libs.assertj.core)
 }

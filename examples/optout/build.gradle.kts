@@ -13,8 +13,6 @@ plugins {
 dataClassGenerate { enabled.set(false) }
 
 dependencies {
-  implementation(project(":annotation"))
-
   testImplementation(libs.junit)
   testImplementation(libs.assertj.core)
 }

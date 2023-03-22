@@ -32,13 +32,19 @@ class DataClassGeneratePlugin : KotlinCompilerPluginSupportPlugin {
   override fun applyToCompilation(
       kotlinCompilation: KotlinCompilation<*>
   ): Provider<List<SubpluginOption>> {
+    val project = kotlinCompilation.target.project
+    val extension = project.extensions.getByType(DataClassGeneratePluginExtension::class.java)
+
     kotlinCompilation.dependencies {
       compileOnly("com.facebook.kotlin.compilerplugins.dataclassgenerate:annotation:$dcgVersion")
     }
 
-    val project = kotlinCompilation.target.project
-    val extension = project.extensions.getByType(DataClassGeneratePluginExtension::class.java)
-
+    if (extension.generateSuperClass.get()) {
+      kotlinCompilation.dependencies {
+        implementation(
+            "com.facebook.kotlin.compilerplugins.dataclassgenerate:superclass:$dcgVersion")
+      }
+    }
     return project.provider {
       listOf(
           SubpluginOption(key = "enabled", value = extension.enabled.get().toString()),

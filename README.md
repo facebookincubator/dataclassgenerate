@@ -13,6 +13,26 @@ Despite appearing compact in source code, the compiler generates multiple utilit
 Before an optimizer (like [Redex](https://github.com/facebook/redex/) or [R8](https://r8.googlesource.com/r8)) can strip these methods, it must prove that they are never used.
 Since methods like `toString`, `equals`, and `hashCode` are so fundamental (defined on `Object`/`Any`), calls to them will exist all over the app, and the optimizer must prove that a data class would not flow into any of those call sites, which is often not possible.
 
+## How to use in your project
+
+Apply the gradle plugin.
+```kotlin
+plugins {
+  id("com.facebook.kotlin.compilerplugins.dataclassgenerate") version <version>
+}
+```
+And that's it! The default configuration will add the artifact which contains `@DataClassGenerate` automatically.
+
+If needed, you can configure the DataClassGenerate plugin using `dataClassGenerate` block:
+```kotlin
+import com.facebook.kotlin.compilerplugins.dataclassgenerate.gradle.DataClassGenerateMode
+
+dataClassGenerate {
+    enabled.set(true/false) // defaults to true
+    mode.set(DataClassGenerateMode.EXPLICIT/STRICT/IMPLICIT) // defaults to EXPLICIT
+    generateSuperClass.set(true/false) // defaults to false
+}
+```
 
 ## How it works
 DataClassGenerate Kotlin Compiler Plugin processes `@DataClassGenerate` annotation.
@@ -116,12 +136,6 @@ data class C(val l:Long): SomeSuperClass()
 ## Releases
 
 Coming soon
-
-
-## How to use in your project
-
-Coming soon
-
 
 ## Compiler compatibility
 
