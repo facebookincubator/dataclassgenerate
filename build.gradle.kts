@@ -15,9 +15,9 @@ plugins {
 }
 
 subprojects {
-  repositories { 
+  repositories {
     google()
-    mavenCentral() 
+    mavenCentral()
   }
 
   tasks.withType<KotlinCompile>().configureEach {
