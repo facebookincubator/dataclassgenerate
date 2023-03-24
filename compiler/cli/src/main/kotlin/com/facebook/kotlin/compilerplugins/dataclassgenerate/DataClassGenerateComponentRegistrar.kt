@@ -14,19 +14,18 @@ import com.facebook.kotlin.compilerplugins.dataclassgenerate.configuration.DataC
 import com.facebook.kotlin.compilerplugins.dataclassgenerate.configuration.get
 import org.jetbrains.kotlin.codegen.extensions.ClassBuilderInterceptorExtension
 import org.jetbrains.kotlin.com.intellij.mock.MockProject
-import org.jetbrains.kotlin.compiler.plugin.ComponentRegistrar
+import org.jetbrains.kotlin.compiler.plugin.CompilerPluginRegistrar
 import org.jetbrains.kotlin.config.CompilerConfiguration
 
-class DataClassGenerateComponentRegistrar : ComponentRegistrar {
-  override fun registerProjectComponents(
-      project: MockProject,
-      configuration: CompilerConfiguration
-  ) {
+@OptIn(org.jetbrains.kotlin.compiler.plugin.ExperimentalCompilerApi::class)
+class DataClassGenerateComponentRegistrar : CompilerPluginRegistrar() {
+
+  override fun ExtensionStorage.registerExtensions(configuration: CompilerConfiguration) {
     if (configuration[ENABLED]) {
       DataClassGenerateExt.generateSuperClass = configuration[GENERATE_SUPER_CLASS]
 
       ClassBuilderInterceptorExtension.registerExtension(
-          project, DataClassGenerateInterceptorExtension(configuration[MODE]))
+          DataClassGenerateInterceptorExtension(configuration[MODE]))
     }
   }
 
