@@ -13,14 +13,19 @@ import com.tschuchort.compiletesting.KotlinCompilation
 import com.tschuchort.compiletesting.PluginOption
 import com.tschuchort.compiletesting.SourceFile
 
+@OptIn(org.jetbrains.kotlin.compiler.plugin.ExperimentalCompilerApi::class)
 open class DcgTestCase {
   companion object {
     fun compileWithK2(
         vararg srcs: SourceFile,
         dcgConfig: DcgTestConfiguration = DEFAULT_DCG_CONFIG,
     ): KotlinCompilation.Result {
-      // todo reenable k2 testing when Kotlin 1.8 support is landed
-      return makeCompilationContext(srcs, dcgConfig).compile()
+      return makeCompilationContext(srcs, dcgConfig)
+          .apply {
+            useK2 = true
+            supportsK2 = true
+          }
+          .compile()
     }
 
     fun compileWithK1(
@@ -35,7 +40,7 @@ open class DcgTestCase {
     ): KotlinCompilation =
         KotlinCompilation().apply {
           sources = code.asList()
-          compilerPlugins = listOf(DataClassGenerateComponentRegistrar())
+          compilerPluginRegistrars = listOf(DataClassGenerateComponentRegistrar())
           messageOutputStream = System.out
           commandLineProcessors = listOf(DataClassGenerateCommandLineProcessor())
           pluginOptions = dcgConfig.asCliOptions()
