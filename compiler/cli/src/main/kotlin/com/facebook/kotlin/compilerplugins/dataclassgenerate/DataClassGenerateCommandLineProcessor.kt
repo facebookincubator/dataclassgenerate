@@ -17,7 +17,6 @@ import org.jetbrains.kotlin.compiler.plugin.CliOptionProcessingException
 import org.jetbrains.kotlin.compiler.plugin.CommandLineProcessor
 import org.jetbrains.kotlin.config.CompilerConfiguration
 
-@OptIn(org.jetbrains.kotlin.compiler.plugin.ExperimentalCompilerApi::class)
 class DataClassGenerateCommandLineProcessor : CommandLineProcessor {
   override val pluginId: String = "com.facebook.kotlin.dataclassgenerate"
   override val pluginOptions: Collection<AbstractCliOption> =
