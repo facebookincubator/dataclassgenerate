@@ -29,21 +29,21 @@ internal val JvmDeclarationOrigin.containingClassDescriptor: ClassDescriptor?
         else -> descriptor?.containingDeclaration as? IrBasedClassDescriptor
       }
 
-internal inline fun JvmDeclarationOrigin.isDataClass(): Boolean =
+internal fun JvmDeclarationOrigin.isDataClass(): Boolean =
     containingClassDescriptor?.isData ?: false
 
-internal inline fun JvmDeclarationOrigin.superClassLiteral(): String {
+internal fun JvmDeclarationOrigin.superClassLiteral(): String {
   val superName = containingClassDescriptor?.getSuperClassNotAny()?.fqNameOrNull()
   return superName?.toString()?.replace(".", "/") ?: OBJECT_LITERAL
 }
 
-internal inline fun JvmDeclarationOrigin.isLikelyMethodOfSyntheticClass(): Boolean =
+internal fun JvmDeclarationOrigin.isLikelyMethodOfSyntheticClass(): Boolean =
     containingClassDescriptor?.name?.asString()?.isLikelySynthetic() ?: false
 
-internal inline fun JvmDeclarationOrigin.findAnnotation(fqName: FqName): AnnotationDescriptor? =
+internal fun JvmDeclarationOrigin.findAnnotation(fqName: FqName): AnnotationDescriptor? =
     containingClassDescriptor?.annotations?.findAnnotation(fqName)
 
-internal inline fun JvmDeclarationOrigin.isSynthesized(): Boolean {
+internal fun JvmDeclarationOrigin.isSynthesized(): Boolean {
   return when {
     compilerVersion < kotlin150 -> {
       // Before Kotlin 1.5.0 it CallableMemberDescriptor::kind field was a reliable source
