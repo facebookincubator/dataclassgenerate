@@ -30,10 +30,15 @@ publishing {
     }
   }
 
-  publications.register<MavenPublication>("DcgPublication") {
+  if (!plugins.hasPlugin("org.jetbrains.kotlin.multiplatform")) {
+    publications.register<MavenPublication>("DcgPublication") {
+      from(components["java"])
+    }
+  }
+
+  publications.withType(MavenPublication::class) {
     groupId = "com.facebook.kotlin.compilerplugins.dataclassgenerate"
     artifactId = project.name
-    from(components["java"])
     version = "1.0.0"
     pom {
       description.set(

@@ -5,6 +5,9 @@
  * LICENSE file in the root directory of this source tree.
  */
 
-plugins { kotlin("multiplatform") }
+plugins {
+  kotlin("multiplatform")
+  id("publish")
+}
 
 kotlin { jvm() }

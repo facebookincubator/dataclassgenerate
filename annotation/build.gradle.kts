@@ -14,6 +14,9 @@
  * limitations under the License.
  */
 
-plugins { kotlin("multiplatform") }
+plugins {
+  kotlin("multiplatform")
+  id("publish")
+}
 
 kotlin { jvm() }
