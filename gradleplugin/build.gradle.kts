@@ -10,6 +10,7 @@ import java.util.*
 plugins {
   alias(libs.plugins.kotlin)
   id("java-gradle-plugin")
+  id("publish")
 }
 
 dependencies {
