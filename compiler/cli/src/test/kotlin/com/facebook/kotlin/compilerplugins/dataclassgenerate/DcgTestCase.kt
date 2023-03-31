@@ -19,7 +19,7 @@ open class DcgTestCase {
         vararg srcs: SourceFile,
         dcgConfig: DcgTestConfiguration = DEFAULT_DCG_CONFIG,
     ): KotlinCompilation.Result {
-       // todo reenable k2 testing when Kotlin 1.8 support is landed
+      // todo reenable k2 testing when Kotlin 1.8 support is landed
       return makeCompilationContext(srcs, dcgConfig).compile()
     }
 
