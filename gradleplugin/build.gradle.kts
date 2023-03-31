@@ -1,4 +1,4 @@
-import java.util.*
+import java.util.Properties
 
 /*
  * Copyright (c) Meta Platforms, Inc. and affiliates.
