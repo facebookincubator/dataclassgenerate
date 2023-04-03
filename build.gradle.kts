@@ -35,3 +35,13 @@ subprojects {
     }
   }
 }
+
+tasks.register("publishAllToMavenLocal") {
+  description = "Publish all the artifacts to be available inside Maven Local"
+  dependsOn(gradle.includedBuild("gradleplugin").task(":publishToMavenLocal"))
+  subprojects.forEach {
+    if (it.project.plugins.hasPlugin("publish")) {
+      dependsOn(it.tasks.named("publishToMavenLocal"))
+    }
+  }
+}

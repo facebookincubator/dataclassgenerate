@@ -30,7 +30,8 @@ publishing {
     }
   }
 
-  if (!plugins.hasPlugin("org.jetbrains.kotlin.multiplatform")) {
+  // We don't want to create pubblications for KMP and Gradle Plugin targets
+  if (plugins.hasPlugin("org.jetbrains.kotlin.jvm") && name != "gradleplugin") {
     publications.register<MavenPublication>("DcgPublication") {
       from(components["java"])
     }
