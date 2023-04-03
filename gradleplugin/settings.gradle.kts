@@ -23,3 +23,5 @@ dependencyResolutionManagement {
 }
 
 rootProject.name = "gradleplugin"
+
+includeBuild("../build-logic")

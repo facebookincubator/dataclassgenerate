@@ -30,10 +30,14 @@ publishing {
     }
   }
 
-  publications.register<MavenPublication>("DcgPublication") {
+  // We don't want to create pubblications for KMP and Gradle Plugin targets
+  if (plugins.hasPlugin("org.jetbrains.kotlin.jvm") && name != "gradleplugin") {
+    publications.register<MavenPublication>("DcgPublication") { from(components["java"]) }
+  }
+
+  publications.withType(MavenPublication::class) {
     groupId = "com.facebook.kotlin.compilerplugins.dataclassgenerate"
     artifactId = project.name
-    from(components["java"])
     version = "1.0.0"
     pom {
       description.set(
