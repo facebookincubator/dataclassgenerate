@@ -1,0 +1,43 @@
+name: Publish Snapshot
+on:
+  push:
+    branches:
+      - main
+  workflow_dispatch:
+
+jobs:
+  publish:
+    # remove this check when your secrets are setup and you're ready to publish
+    if: ${{ github.repository == 'facebookincubator/dataclassgenerate'}}
+    runs-on: [ubuntu-latest]
+    env:
+      GRADLE_OPTS: -Dorg.gradle.parallel=false
+
+    steps:
+      - name: Checkout Repo
+        uses: actions/checkout@v3
+      - name: Configure JDK
+        uses: actions/setup-java@v3
+        with:
+          distribution: 'zulu'
+          java-version: '11'
+      - name: Cache Gradle Caches
+        uses: gradle/gradle-build-action@v2
+
+      - name: Publish to Maven Local
+        run: ./gradlew publishAllToMavenLocal
+        env:
+          ORG_GRADLE_PROJECT_USE_SNAPSHOT: true
+
+      - name: Upload Build Artifacts
+        uses: actions/upload-artifact@v3
+        with:
+          name: 'snapshot-artifacts'
+          path: '~/.m2/repository/'
+
+      - name: Publish to the Snapshot Repository
+        run: ./gradlew publishAllToSnapshotRepository
+        env:
+          ORG_GRADLE_PROJECT_NEXUS_USERNAME: ${{ secrets.ORG_GRADLE_PROJECT_NEXUS_USERNAME }}
+          ORG_GRADLE_PROJECT_NEXUS_PASSWORD: ${{ secrets.ORG_GRADLE_PROJECT_NEXUS_PASSWORD }}
+          ORG_GRADLE_PROJECT_USE_SNAPSHOT: true

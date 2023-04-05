@@ -45,3 +45,16 @@ tasks.register("publishAllToMavenLocal") {
     }
   }
 }
+
+tasks.register("publishAllToSnapshotRepository") {
+  description = "Publish all the artifacts to be available as Snapshots on Sonatype"
+  dependsOn(
+      gradle
+          .includedBuild("gradleplugin")
+          .task(":publishAllPublicationsToSonatypeSnapshotRepository"))
+  subprojects.forEach {
+    if (it.project.plugins.hasPlugin("publish")) {
+      dependsOn(it.tasks.named("publishAllPublicationsToSonatypeSnapshotRepository"))
+    }
+  }
+}
