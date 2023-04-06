@@ -36,7 +36,7 @@ jobs:
           path: '~/.m2/repository/'
 
       - name: Publish to the Snapshot Repository
-        run: ./gradlew publishAllToSnapshotRepository
+        run: ./gradlew publishAllToSonatype
         env:
           ORG_GRADLE_PROJECT_NEXUS_USERNAME: ${{ secrets.ORG_GRADLE_PROJECT_NEXUS_USERNAME }}
           ORG_GRADLE_PROJECT_NEXUS_PASSWORD: ${{ secrets.ORG_GRADLE_PROJECT_NEXUS_PASSWORD }}
