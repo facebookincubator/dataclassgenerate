@@ -10,6 +10,8 @@ plugins {
   id("signing")
 }
 
+group = "com.facebook.kotlin.compilerplugins.dataclassgenerate"
+
 if (!"USE_SNAPSHOT".byProperty.isNullOrBlank()) {
   version = "$VERSION_NAME-SNAPSHOT"
 } else {
