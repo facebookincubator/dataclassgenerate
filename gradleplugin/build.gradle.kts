@@ -12,6 +12,8 @@ plugins {
   id("publish")
 }
 
+group = "com.facebook.kotlin.compilerplugins.dataclassgenerate"
+
 val nexusUsername = findProperty("NEXUS_USERNAME")?.toString()
 val nexusPassword = findProperty("NEXUS_PASSWORD")?.toString()
 
@@ -30,6 +32,8 @@ dependencies {
 }
 
 gradlePlugin {
+  website.set("https://github.com/facebookincubator/dataclassgenerate")
+  vcsUrl.set("https://github.com/facebookincubator/dataclassgenerate")
   plugins {
     create("dataClassGeneratePlugin") {
       id = "com.facebook.kotlin.compilerplugins.dataclassgenerate"
