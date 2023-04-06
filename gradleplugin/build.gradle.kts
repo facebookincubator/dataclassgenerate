@@ -7,8 +7,21 @@
 
 plugins {
   alias(libs.plugins.kotlin)
+  alias(libs.plugins.publish.plugin)
   id("java-gradle-plugin")
   id("publish")
+}
+
+val nexusUsername = findProperty("NEXUS_USERNAME")?.toString()
+val nexusPassword = findProperty("NEXUS_PASSWORD")?.toString()
+
+nexusPublishing {
+  repositories {
+    sonatype {
+      username.set(nexusUsername)
+      password.set(nexusPassword)
+    }
+  }
 }
 
 dependencies {

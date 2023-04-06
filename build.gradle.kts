@@ -12,6 +12,19 @@ plugins {
   alias(libs.plugins.kotlin.android) apply false
   alias(libs.plugins.kotlin.serialization) apply false
   alias(libs.plugins.android.library) apply false
+  alias(libs.plugins.publish.plugin)
+}
+
+val nexusUsername = findProperty("NEXUS_USERNAME")?.toString()
+val nexusPassword = findProperty("NEXUS_PASSWORD")?.toString()
+
+nexusPublishing {
+  repositories {
+    sonatype {
+      username.set(nexusUsername)
+      password.set(nexusPassword)
+    }
+  }
 }
 
 subprojects {
@@ -46,15 +59,13 @@ tasks.register("publishAllToMavenLocal") {
   }
 }
 
-tasks.register("publishAllToSnapshotRepository") {
-  description = "Publish all the artifacts to be available as Snapshots on Sonatype"
-  dependsOn(
-      gradle
-          .includedBuild("gradleplugin")
-          .task(":publishAllPublicationsToSonatypeSnapshotRepository"))
+tasks.register("publishAllToSonatype") {
+  description =
+      "Publish all the artifacts to be available on Sonatype (either Maven Central or Snapshot Repository)"
+  dependsOn(gradle.includedBuild("gradleplugin").task(":publishToSonatype"))
   subprojects.forEach {
     if (it.project.plugins.hasPlugin("publish")) {
-      dependsOn(it.tasks.named("publishAllPublicationsToSonatypeSnapshotRepository"))
+      dependsOn(it.tasks.named("publishToSonatype"))
     }
   }
 }

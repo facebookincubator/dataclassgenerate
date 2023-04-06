@@ -10,26 +10,13 @@ plugins {
   id("signing")
 }
 
-publishing {
-  repositories {
-    maven {
-      name = "mavenCentral"
-      url = uri("https://oss.sonatype.org/service/local/staging/deploy/maven2")
-      credentials {
-        username = "NEXUS_USERNAME".byProperty
-        password = "NEXUS_PASSWORD".byProperty
-      }
-    }
-    maven {
-      name = "sonatypeSnapshot"
-      url = uri("https://oss.sonatype.org/content/repositories/snapshots")
-      credentials {
-        username = "NEXUS_USERNAME".byProperty
-        password = "NEXUS_PASSWORD".byProperty
-      }
-    }
-  }
+if (!"USE_SNAPSHOT".byProperty.isNullOrBlank()) {
+  version = "$VERSION_NAME-SNAPSHOT"
+} else {
+  version = VERSION_NAME
+}
 
+publishing {
   // We don't want to create pubblications for KMP and Gradle Plugin targets
   if (plugins.hasPlugin("org.jetbrains.kotlin.jvm") && name != "gradleplugin") {
     publications.register<MavenPublication>("DcgPublication") { from(components["java"]) }
@@ -38,11 +25,6 @@ publishing {
   publications.withType(MavenPublication::class) {
     groupId = "com.facebook.kotlin.compilerplugins.dataclassgenerate"
     artifactId = project.name
-    if (!"USE_SNAPSHOT".byProperty.isNullOrBlank()) {
-      version = "$VERSION_NAME-SNAPSHOT"
-    } else {
-      version = VERSION_NAME
-    }
     pom {
       description.set(
           "A Kotlin compiler plugin that addresses an Android APK size overhead from Kotlin data classes.")
