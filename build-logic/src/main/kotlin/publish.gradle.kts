@@ -14,18 +14,18 @@ publishing {
   repositories {
     maven {
       name = "mavenCentral"
-      url = uri("https://s01.oss.sonatype.org/service/local/staging/deploy/maven2")
+      url = uri("https://oss.sonatype.org/service/local/staging/deploy/maven2")
       credentials {
-        username = "SONATYPE_USERNAME".byProperty
-        password = "SONATYPE_PASSWORD".byProperty
+        username = "NEXUS_USERNAME".byProperty
+        password = "NEXUS_PASSWORD".byProperty
       }
     }
     maven {
       name = "sonatypeSnapshot"
       url = uri("https://oss.sonatype.org/content/repositories/snapshots")
       credentials {
-        username = "SONATYPE_USERNAME".byProperty
-        password = "SONATYPE_PASSWORD".byProperty
+        username = "NEXUS_USERNAME".byProperty
+        password = "NEXUS_PASSWORD".byProperty
       }
     }
   }
@@ -38,7 +38,11 @@ publishing {
   publications.withType(MavenPublication::class) {
     groupId = "com.facebook.kotlin.compilerplugins.dataclassgenerate"
     artifactId = project.name
-    version = "1.0.0"
+    if (!"USE_SNAPSHOT".byProperty.isNullOrBlank()) {
+      version = "$VERSION_NAME-SNAPSHOT"
+    } else {
+      version = VERSION_NAME
+    }
     pom {
       description.set(
           "A Kotlin compiler plugin that addresses an Android APK size overhead from Kotlin data classes.")

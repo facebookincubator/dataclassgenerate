@@ -1,5 +1,3 @@
-import java.util.Properties
-
 /*
  * Copyright (c) Meta Platforms, Inc. and affiliates.
  *
@@ -35,14 +33,10 @@ val versionDirectory = "$buildDir/generated/version/"
 
 sourceSets { main { java.srcDir(versionDirectory) } }
 
-val rootProperties = Properties()
-
-file("../gradle.properties").inputStream().apply { rootProperties.load(this) }
-
 val pluginVersionTask =
     tasks.register("pluginVersion") {
       val outputDir = file(versionDirectory)
-      inputs.property("version", rootProperties.getProperty("VERSION_NAME"))
+      inputs.property("version", VERSION_NAME)
       outputs.dir(outputDir)
       doLast {
         val versionFile =
@@ -52,7 +46,7 @@ val pluginVersionTask =
         versionFile.writeText(
             """// Generated file. Do not edit!
 package com.facebook.kotlin.compilerplugins.dataclassgenerate.gradle
-internal const val dcgVersion = "${rootProperties.getProperty("VERSION_NAME")}"
+internal const val dcgVersion = "$VERSION_NAME"
 """,
             Charsets.UTF_8)
       }
