@@ -53,7 +53,7 @@ sourceSets { main { java.srcDir(versionDirectory) } }
 val pluginVersionTask =
     tasks.register("pluginVersion") {
       val outputDir = file(versionDirectory)
-      inputs.property("version", VERSION_NAME)
+      inputs.property("version", version)
       outputs.dir(outputDir)
       doLast {
         val versionFile =
@@ -63,7 +63,7 @@ val pluginVersionTask =
         versionFile.writeText(
             """// Generated file. Do not edit!
 package com.facebook.kotlin.compilerplugins.dataclassgenerate.gradle
-internal const val dcgVersion = "$VERSION_NAME"
+internal const val dcgVersion = "$version"
 """,
             Charsets.UTF_8)
       }
