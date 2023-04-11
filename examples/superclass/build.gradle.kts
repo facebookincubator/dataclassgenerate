@@ -28,7 +28,7 @@ configurations.configureEach {
         .using(project(":annotation"))
     substitute(module("com.facebook.kotlin.compilerplugins.dataclassgenerate:superclass"))
         .using(project(":superclass"))
-    substitute(module("com.facebook.kotlin.compilerplugins.dataclassgenerate:compiler"))
+    substitute(module("com.facebook.kotlin.compilerplugins.dataclassgenerate:cli"))
         .using(project(":compiler:cli"))
   }
 }
