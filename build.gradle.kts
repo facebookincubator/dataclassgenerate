@@ -48,6 +48,16 @@ subprojects {
       kotlinOptions.freeCompilerArgs = listOf("-progressive")
     }
   }
+  configurations.configureEach {
+    resolutionStrategy.dependencySubstitution {
+      substitute(module("com.facebook.kotlin.compilerplugins.dataclassgenerate:annotation"))
+          .using(project(":annotation"))
+      substitute(module("com.facebook.kotlin.compilerplugins.dataclassgenerate:superclass"))
+          .using(project(":superclass"))
+      substitute(module("com.facebook.kotlin.compilerplugins.dataclassgenerate:cli"))
+          .using(project(":compiler:cli"))
+    }
+  }
 }
 
 tasks.register("publishAllToMavenLocal") {
