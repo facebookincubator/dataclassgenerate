@@ -29,12 +29,12 @@ include(
     ":compiler:k1",
     ":compiler:k2",
     ":superclass",
-    ":sample",
     ":examples:explicit",
     ":examples:implicit",
     ":examples:innerclass",
     ":examples:nosuperclass",
     ":examples:optout",
+    ":examples:println",
     ":examples:strict",
     ":examples:superclass")
 
