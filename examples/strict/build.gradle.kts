@@ -34,14 +34,3 @@ dependencies {
   testImplementation(libs.junit)
   testImplementation(libs.assertj.core)
 }
-
-configurations.configureEach {
-  resolutionStrategy.dependencySubstitution {
-    substitute(module("com.facebook.kotlin.compilerplugins.dataclassgenerate:annotation"))
-        .using(project(":annotation"))
-    substitute(module("com.facebook.kotlin.compilerplugins.dataclassgenerate:superclass"))
-        .using(project(":superclass"))
-    substitute(module("com.facebook.kotlin.compilerplugins.dataclassgenerate:cli"))
-        .using(project(":compiler:cli"))
-  }
-}
