@@ -31,6 +31,11 @@ dependencies {
   compileOnly(libs.kotlin.gradlePlugin.api)
 }
 
+java {
+  withSourcesJar()
+  withJavadocJar()
+}
+
 gradlePlugin {
   website.set("https://github.com/facebookincubator/dataclassgenerate")
   vcsUrl.set("https://github.com/facebookincubator/dataclassgenerate")
@@ -70,3 +75,5 @@ internal const val dcgVersion = "$version"
     }
 
 tasks.getByName("compileKotlin").dependsOn(pluginVersionTask)
+
+tasks.getByName("sourcesJar").dependsOn(pluginVersionTask)

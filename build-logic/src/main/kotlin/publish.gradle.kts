@@ -24,6 +24,13 @@ publishing {
     publications.register<MavenPublication>("DcgPublication") { from(components["java"]) }
   }
 
+  // For KMP targets, we register an empty javadoc jar to avoid publishing errors
+  if (plugins.hasPlugin("org.jetbrains.kotlin.multiplatform")) {
+    val javadocJar =
+        tasks.register("javadocJar", Jar::class.java) { archiveClassifier.set("javadoc") }
+    publications.withType(MavenPublication::class) { artifact(javadocJar) }
+  }
+
   publications.withType(MavenPublication::class) {
     groupId = "com.facebook.kotlin.compilerplugins.dataclassgenerate"
     artifactId = project.name
