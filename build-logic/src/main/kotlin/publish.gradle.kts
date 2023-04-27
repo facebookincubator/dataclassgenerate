@@ -73,5 +73,12 @@ signing {
   isRequired = !(signingKey.isNullOrBlank() || signingPwd.isNullOrBlank())
 }
 
+// Fix for https://youtrack.jetbrains.com/issue/KT-46466/
+// On Gradle 8+, the signing task is not correclty wired to the publishing tasks.
+// This requires a fix on KGP that is currently pending.
+val signingTasks = tasks.withType<Sign>()
+
+tasks.withType<AbstractPublishToMaven>().configureEach { dependsOn(signingTasks) }
+
 val String.byProperty: String?
   get() = providers.gradleProperty(this).orNull
