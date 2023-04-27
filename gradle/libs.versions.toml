@@ -16,14 +16,16 @@ mockito-kotlin = "2.2.11"
 assertj-core = "2.9.0"
 junit = "4.12"
 robolectric = "4.9"
-publish-plugin = "1.1.0"
+nexus-publish-plugin = "1.1.0"
+gradle-publish-plugin = "1.2.0"
 
 [plugins]
 kotlin = { id = "org.jetbrains.kotlin.jvm", version.ref = "kotlin"}
 kotlin-android = { id = "org.jetbrains.kotlin.android", version.ref = "kotlin"}
 kotlin-serialization = { id = "org.jetbrains.kotlin.plugin.serialization", version.ref = "kotlin"}
 android-library= { id = "com.android.library", version.ref = "agp"}
-publish-plugin = { id = "io.github.gradle-nexus.publish-plugin", version.ref = "publish-plugin"}
+nexus-publish-plugin = { id = "io.github.gradle-nexus.publish-plugin", version.ref = "nexus-publish-plugin"}
+gradle-publish-plugin = { id = "com.gradle.plugin-publish", version.ref = "gradle-publish-plugin"}
 
 [libraries]
 kotlin-compilerEmbeddable = { module = "org.jetbrains.kotlin:kotlin-compiler-embeddable", version.ref = "kotlin" }

@@ -7,7 +7,8 @@
 
 plugins {
   alias(libs.plugins.kotlin)
-  alias(libs.plugins.publish.plugin)
+  alias(libs.plugins.nexus.publish.plugin)
+  alias(libs.plugins.gradle.publish.plugin)
   id("java-gradle-plugin")
   id("publish")
 }
@@ -47,6 +48,7 @@ gradlePlugin {
       displayName = "Data Class Generate"
       description =
           "Data Class Generate is a Kotlin compiler plugin that helps to address Kotlin data class binary size overhead"
+      tags.set(listOf("kotlin", "compiler", "dataclass", "optimization"))
     }
   }
 }
