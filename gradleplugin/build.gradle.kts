@@ -32,6 +32,8 @@ dependencies {
   compileOnly(libs.kotlin.gradlePlugin.api)
 }
 
+kotlin { jvmToolchain(8) }
+
 java {
   withSourcesJar()
   withJavadocJar()

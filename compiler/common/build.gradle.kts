@@ -11,6 +11,8 @@ plugins {
   id("publish")
 }
 
+kotlin { jvmToolchain(8) }
+
 java {
   withSourcesJar()
   withJavadocJar()
