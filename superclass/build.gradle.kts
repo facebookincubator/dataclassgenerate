@@ -10,4 +10,7 @@ plugins {
   id("publish")
 }
 
-kotlin { jvm() }
+kotlin {
+  jvm()
+  jvmToolchain(8)
+}
