@@ -5,4 +5,4 @@
  * LICENSE file in the root directory of this source tree.
  */
 
-const val VERSION_NAME = "1.0.0"
+const val VERSION_NAME = "1.0.1"
