@@ -51,6 +51,14 @@ jobs:
           ORG_GRADLE_PROJECT_SIGNING_PWD: ${{ secrets.ORG_GRADLE_PROJECT_SIGNING_PWD }}
 
       - name: Publish the Gradle Plugin to Maven Central
+        run: ./gradlew -p gradleplugin publishToSonatype closeAndReleaseSonatypeStagingRepository
+        env:
+          ORG_GRADLE_PROJECT_NEXUS_USERNAME: ${{ secrets.ORG_GRADLE_PROJECT_NEXUS_USERNAME }}
+          ORG_GRADLE_PROJECT_NEXUS_PASSWORD: ${{ secrets.ORG_GRADLE_PROJECT_NEXUS_PASSWORD }}
+          ORG_GRADLE_PROJECT_SIGNING_KEY: ${{ secrets.ORG_GRADLE_PROJECT_SIGNING_KEY }}
+          ORG_GRADLE_PROJECT_SIGNING_PWD: ${{ secrets.ORG_GRADLE_PROJECT_SIGNING_PWD }}
+
+      - name: Publish the Gradle Plugin to Gradle Portal
         run: ./gradlew -p gradleplugin publishPlugins
         env:
           GRADLE_PUBLISH_KEY: ${{ secrets.ORG_GRADLE_PROJECT_GRADLE_PUBLISH_KEY }}
