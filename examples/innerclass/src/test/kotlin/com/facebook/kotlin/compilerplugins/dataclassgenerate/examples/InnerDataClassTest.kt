@@ -24,6 +24,6 @@ class InnerDataClassTest {
   @Test
   fun `inner sealed data class`() {
     val single: SuperWrapper.WrappingSealedClass = SuperWrapper.WrappingSealedClass.Single("sample")
-    val s = single.toString()
+    single.toString()
   }
 }
