@@ -34,6 +34,7 @@ open class DcgTestCase {
     ): KotlinCompilation.Result {
       return makeCompilationContext(srcs, dcgConfig).compile()
     }
+
     private fun makeCompilationContext(
         code: Array<out SourceFile>,
         dcgConfig: DcgTestConfiguration

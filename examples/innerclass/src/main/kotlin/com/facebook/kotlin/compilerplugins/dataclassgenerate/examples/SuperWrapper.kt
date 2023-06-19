@@ -15,6 +15,7 @@ data class SuperWrapper(val dummy: Any) {
   sealed class WrappingSealedClass {
     @DataClassGenerate(toString = Mode.KEEP, equalsHashCode = Mode.KEEP)
     data class Single(val url: String) : WrappingSealedClass()
+
     @DataClassGenerate(toString = Mode.KEEP, equalsHashCode = Mode.KEEP)
     data class Double(val first: String, val second: String?) : WrappingSealedClass()
   }

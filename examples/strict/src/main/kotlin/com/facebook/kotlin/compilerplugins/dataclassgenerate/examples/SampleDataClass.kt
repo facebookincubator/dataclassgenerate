@@ -14,7 +14,9 @@ import com.facebook.kotlin.compilerplugins.dataclassgenerate.annotation.Mode.OMI
 @DataClassGenerate
 data class SampleDataClassWithExplicitOverrides(val str: String) {
   override fun toString() = "dummy"
+
   override fun equals(other: Any?) = true
+
   override fun hashCode() = 42
 }
 
