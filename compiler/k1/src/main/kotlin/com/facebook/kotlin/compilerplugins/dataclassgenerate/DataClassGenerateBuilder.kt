@@ -26,7 +26,10 @@ import org.jetbrains.kotlin.codegen.ClassBuilder
 import org.jetbrains.kotlin.codegen.DelegatingClassBuilder
 import org.jetbrains.kotlin.com.intellij.psi.PsiElement
 import org.jetbrains.kotlin.descriptors.annotations.AnnotationDescriptor
+import org.jetbrains.kotlin.ir.descriptors.IrBasedClassDescriptor
+import org.jetbrains.kotlin.name.FqName
 import org.jetbrains.kotlin.psi.KtClass
+import org.jetbrains.kotlin.resolve.descriptorUtil.fqNameSafe
 import org.jetbrains.kotlin.resolve.jvm.diagnostics.JvmDeclarationOrigin
 import org.jetbrains.org.objectweb.asm.MethodVisitor
 
@@ -58,31 +61,33 @@ class DataClassGenerateBuilder(
       interfaces: Array<out String>
   ) {
     var effectiveSuperName = superName
+    // K1 handling
     val originElement = declarationOrigin.element
     if (originElement is KtClass) {
       if (originElement.isData()) {
         if (mode == PluginMode.STRICT && !originElement.isAnnotatedWithDataClassGenerate()) {
-          val message =
-              """
-           You are running DataClassGenerate compiler plugin in a STRICT mode.
-           But ${originElement.fqName} is not annotated with @DataClassGenerate.
-
-           Replace ${originElement.fqName} with @DataClassGenerate(toString=Mode.OMIT, equalsHashCode=Mode.KEEP)
-           - If ${originElement.fqName} does not need a `toString()` method use `toString=Mode.OMIT`
-           - If ${originElement.fqName} does not need `equals()` and hashCode()` use `equalsHashCode=Mode.OMIT` or
-           consider replacing it with a regular class.
-
-           Read more:
-           1. What is DataClassGenerate? - https://fburl.com/dataclassgenerate_wiki
-           2. How to configure @DataClassGenerate annotation? - https://fburl.com/dataclassgenerate
-           3. What is STRICT mode? - https://fburl.com/dataclassgenerate_mode
-          """
-                  .trimIndent()
-          throw DataClassGenerateStrictModeViolationException(message)
+          throw DataClassGenerateStrictModeViolationException(
+              generateStrictModeViolationMessage(originElement.fqName))
         }
 
         if (!name.isLikelySynthetic()) {
           effectiveSuperName = adjustSuperClass(superName)
+        }
+      }
+    }
+    // K2 handling
+    else {
+      val originElement = declarationOrigin.descriptor
+      if (originElement is IrBasedClassDescriptor) {
+        if (originElement.isData) {
+          if (mode == PluginMode.STRICT && !originElement.isAnnotatedWithDataClassGenerate()) {
+            throw DataClassGenerateStrictModeViolationException(
+                generateStrictModeViolationMessage(originElement.fqNameSafe))
+          }
+
+          if (!name.isLikelySynthetic()) {
+            effectiveSuperName = adjustSuperClass(superName)
+          }
         }
       }
     }
@@ -144,6 +149,10 @@ class DataClassGenerateBuilder(
         .contains(DataClassGenerateExt.annotationFqName.shortName())
   }
 
+  private fun IrBasedClassDescriptor.isAnnotatedWithDataClassGenerate(): Boolean {
+    return annotations.map { it.fqName }.contains(DataClassGenerateExt.annotationFqName)
+  }
+
   private fun shouldGenerate(
       method: String,
       descriptor: AnnotationDescriptor?,
@@ -165,6 +174,23 @@ class DataClassGenerateBuilder(
     }
   }
 }
+
+fun generateStrictModeViolationMessage(fqName: FqName?): String =
+    """
+           You are running DataClassGenerate compiler plugin in a STRICT mode.
+           But $fqName is not annotated with @DataClassGenerate.
+
+           Replace $fqName with @DataClassGenerate(toString=Mode.OMIT, equalsHashCode=Mode.KEEP)
+           - If $fqName does not need a `toString()` method use `toString=Mode.OMIT`
+           - If $fqName does not need `equals()` and hashCode()` use `equalsHashCode=Mode.OMIT` or
+           consider replacing it with a regular class.
+
+           Read more:
+           1. What is DataClassGenerate? - https://fburl.com/dataclassgenerate_wiki
+           2. How to configure @DataClassGenerate annotation? - https://fburl.com/dataclassgenerate
+           3. What is STRICT mode? - https://fburl.com/dataclassgenerate_mode
+          """
+        .trimIndent()
 
 class DataClassGenerateStrictModeViolationException(message: String) : RuntimeException(message)
 
