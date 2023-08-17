@@ -5,6 +5,9 @@
  * LICENSE file in the root directory of this source tree.
  */
 
+// TODO: resolve deprecation errors in DataClassGenerateInterceptorExtension T161233385
+@file:Suppress("DEPRECATION_ERROR")
+
 package com.facebook.kotlin.compilerplugins.dataclassgenerate
 
 import com.facebook.kotlin.compilerplugins.dataclassgenerate.configuration.CompilerConfigurationProperties.ENABLED
