@@ -9,6 +9,7 @@ package com.facebook.kotlin.compilerplugins.dataclassgenerate
 
 import com.facebook.kotlin.compilerplugins.dataclassgenerate.configuration.CompilerConfigurationProperties
 import com.facebook.kotlin.compilerplugins.dataclassgenerate.configuration.PluginMode
+import com.tschuchort.compiletesting.CompilationResult
 import com.tschuchort.compiletesting.KotlinCompilation
 import com.tschuchort.compiletesting.PluginOption
 import com.tschuchort.compiletesting.SourceFile
@@ -19,7 +20,7 @@ open class DcgTestCase {
     fun compileWithK2(
         vararg srcs: SourceFile,
         dcgConfig: DcgTestConfiguration = DEFAULT_DCG_CONFIG,
-    ): KotlinCompilation.Result {
+    ): CompilationResult {
       return makeCompilationContext(srcs, dcgConfig)
           .apply {
             useK2 = true
@@ -31,7 +32,7 @@ open class DcgTestCase {
     fun compileWithK1(
         vararg srcs: SourceFile,
         dcgConfig: DcgTestConfiguration = DEFAULT_DCG_CONFIG,
-    ): KotlinCompilation.Result {
+    ): CompilationResult {
       return makeCompilationContext(srcs, dcgConfig).compile()
     }
 
