@@ -20,7 +20,7 @@ jobs:
           distribution: 'zulu'
           java-version: '11'
       - name: Cache Gradle Caches
-        uses: gradle/gradle-build-action@v2
+        uses: gradle/gradle-build-action@v2.11.1
       - name: Build the Gradle Plugin
         run: ./gradlew -p gradleplugin build
       - name: Build the DCG
