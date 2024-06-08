@@ -26,6 +26,7 @@ import org.jetbrains.kotlin.codegen.ClassBuilder
 import org.jetbrains.kotlin.codegen.DelegatingClassBuilder
 import org.jetbrains.kotlin.com.intellij.psi.PsiElement
 import org.jetbrains.kotlin.descriptors.annotations.AnnotationDescriptor
+import org.jetbrains.kotlin.descriptors.isClass
 import org.jetbrains.kotlin.ir.descriptors.IrBasedClassDescriptor
 import org.jetbrains.kotlin.name.FqName
 import org.jetbrains.kotlin.psi.KtClass
@@ -80,7 +81,10 @@ class DataClassGenerateBuilder(
       val originElement = declarationOrigin.descriptor
       if (originElement is IrBasedClassDescriptor) {
         if (originElement.isData) {
-          if (mode == PluginMode.STRICT && !originElement.isAnnotatedWithDataClassGenerate()) {
+          // TODO(T191800312): Follow up data object support with Redex.
+          if (originElement.kind.isClass &&
+              mode == PluginMode.STRICT &&
+              !originElement.isAnnotatedWithDataClassGenerate()) {
             throw DataClassGenerateStrictModeViolationException(
                 generateStrictModeViolationMessage(originElement.fqNameSafe))
           }
