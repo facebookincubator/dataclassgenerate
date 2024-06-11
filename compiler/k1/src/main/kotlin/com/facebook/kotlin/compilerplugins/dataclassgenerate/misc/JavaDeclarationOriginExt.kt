@@ -9,6 +9,7 @@ package com.facebook.kotlin.compilerplugins.dataclassgenerate.misc
 
 import org.jetbrains.kotlin.descriptors.CallableMemberDescriptor
 import org.jetbrains.kotlin.descriptors.ClassDescriptor
+import org.jetbrains.kotlin.descriptors.ClassKind
 import org.jetbrains.kotlin.descriptors.annotations.AnnotationDescriptor
 import org.jetbrains.kotlin.ir.declarations.IrDeclarationOrigin
 import org.jetbrains.kotlin.ir.descriptors.IrBasedClassDescriptor
@@ -30,7 +31,8 @@ internal val JvmDeclarationOrigin.containingClassDescriptor: ClassDescriptor?
       }
 
 internal fun JvmDeclarationOrigin.isDataClass(): Boolean =
-    containingClassDescriptor?.isData ?: false
+    (containingClassDescriptor?.isData == true &&
+        containingClassDescriptor?.kind == ClassKind.CLASS) ?: false
 
 internal fun JvmDeclarationOrigin.superClassLiteral(): String {
   val superName = containingClassDescriptor?.getSuperClassNotAny()?.fqNameOrNull()

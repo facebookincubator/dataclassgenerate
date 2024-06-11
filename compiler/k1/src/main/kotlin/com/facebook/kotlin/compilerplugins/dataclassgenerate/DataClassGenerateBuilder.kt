@@ -80,11 +80,8 @@ class DataClassGenerateBuilder(
     else {
       val originElement = declarationOrigin.descriptor
       if (originElement is IrBasedClassDescriptor) {
-        if (originElement.isData) {
-          // TODO(T191800312): Follow up data object support with Redex.
-          if (originElement.kind.isClass &&
-              mode == PluginMode.STRICT &&
-              !originElement.isAnnotatedWithDataClassGenerate()) {
+        if (originElement.isData && originElement.kind.isClass) {
+          if (mode == PluginMode.STRICT && !originElement.isAnnotatedWithDataClassGenerate()) {
             throw DataClassGenerateStrictModeViolationException(
                 generateStrictModeViolationMessage(originElement.fqNameSafe))
           }
