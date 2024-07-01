@@ -28,7 +28,12 @@ open class DcgTestCase {
         vararg srcs: SourceFile,
         dcgConfig: DcgTestConfiguration = DEFAULT_DCG_CONFIG,
     ): JvmCompilationResult {
-      return makeCompilationContext(srcs, dcgConfig).compile()
+      return makeCompilationContext(srcs, dcgConfig)
+          .apply {
+            languageVersion = "1.9"
+            supportsK2 = false
+          }
+          .compile()
     }
 
     private fun makeCompilationContext(
