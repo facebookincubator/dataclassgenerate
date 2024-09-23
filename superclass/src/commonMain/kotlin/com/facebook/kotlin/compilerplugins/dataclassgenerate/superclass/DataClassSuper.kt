@@ -7,6 +7,4 @@
 
 package com.facebook.kotlin.compilerplugins.dataclassgenerate.superclass
 
-import com.facebook.proguard.annotations.DoNotStripAny
-
-@DoNotStripAny open class DataClassSuper
+open class DataClassSuper
