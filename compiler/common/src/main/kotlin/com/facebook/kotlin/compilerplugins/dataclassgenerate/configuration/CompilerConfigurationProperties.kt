@@ -21,7 +21,7 @@ object CompilerConfigurationProperties {
           CliOption(
               "mode",
               PluginMode.values().joinToString(prefix = "<", postfix = ">", separator = " | "),
-              "defines plugin mode, check ${PluginMode::name}",
+              "defines plugin mode, check PluginMode.kt enum for more details}",
               required = false),
           CompilerConfigurationKey("mode"),
           PluginMode.EXPLICIT)
