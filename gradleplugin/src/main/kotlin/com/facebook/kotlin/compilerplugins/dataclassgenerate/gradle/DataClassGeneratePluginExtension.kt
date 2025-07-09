@@ -7,7 +7,7 @@
 
 package com.facebook.kotlin.compilerplugins.dataclassgenerate.gradle
 
-import com.facebook.ultralight.Inject
+import javax.inject.Inject
 import org.gradle.api.model.ObjectFactory
 import org.gradle.api.provider.Property
 
