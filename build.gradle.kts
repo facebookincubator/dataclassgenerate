@@ -5,6 +5,7 @@
  * LICENSE file in the root directory of this source tree.
  */
 
+import org.jetbrains.kotlin.gradle.dsl.JvmTarget
 import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
 
 plugins {
@@ -34,9 +35,7 @@ subprojects {
     mavenCentral()
   }
 
-  tasks.withType<KotlinCompile>().configureEach {
-    kotlinOptions.jvmTarget = JavaVersion.VERSION_1_8.toString()
-  }
+  tasks.withType<KotlinCompile>().configureEach { compilerOptions.jvmTarget.set(JvmTarget.JVM_1_8) }
 
   tasks.withType<JavaCompile>().configureEach {
     sourceCompatibility = JavaVersion.VERSION_1_8.toString()
@@ -45,7 +44,7 @@ subprojects {
 
   pluginManager.withPlugin("org.jetbrains.kotlin.jvm") {
     project.tasks.withType<KotlinCompile>().configureEach {
-      kotlinOptions.freeCompilerArgs = listOf("-progressive")
+      compilerOptions.freeCompilerArgs.add("-progressive")
     }
   }
   configurations.configureEach {
