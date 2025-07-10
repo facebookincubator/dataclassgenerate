@@ -24,7 +24,6 @@ import com.facebook.kotlin.compilerplugins.dataclassgenerate.visitor.SuperClassI
 import com.facebook.kotlin.compilerplugins.dataclassgenerate.visitor.ToStringMethodVisitor
 import org.jetbrains.kotlin.codegen.ClassBuilder
 import org.jetbrains.kotlin.codegen.DelegatingClassBuilder
-import org.jetbrains.kotlin.com.intellij.psi.PsiElement
 import org.jetbrains.kotlin.descriptors.annotations.AnnotationDescriptor
 import org.jetbrains.kotlin.descriptors.isClass
 import org.jetbrains.kotlin.ir.descriptors.IrBasedClassDescriptor
@@ -53,7 +52,7 @@ class DataClassGenerateBuilder(
       // We provide a corresponding data with a [declarationOrigin] field in this class.
       // Depending on https://youtrack.jetbrains.com/issue/KT-56814 resolution we should change
       // K2 behaviour
-      _doNotUseOnlyPassToSuperCall: PsiElement?,
+      _doNotUseOnlyPassToSuperCall: DcgPsiElement?,
       version: Int,
       access: Int,
       name: String,
