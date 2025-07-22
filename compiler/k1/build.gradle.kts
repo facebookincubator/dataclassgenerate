@@ -25,3 +25,13 @@ dependencies {
 
   testImplementation(libs.kotlin.compilerEmbeddable)
 }
+
+sourceSets {
+  main {
+    kotlin {
+      exclude(
+          "com/facebook/kotlin/compilerplugins/dataclassgenerate/misc/IdePsiElementAlias.kt",
+      )
+    }
+  }
+}
