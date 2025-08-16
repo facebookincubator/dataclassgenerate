@@ -19,7 +19,7 @@ class SuperClassInitCallOverrideVisitor(original: MethodVisitor) :
       owner: String?,
       name: String?,
       descriptor: String?,
-      isInterface: Boolean
+      isInterface: Boolean,
   ) {
     // Having:
     //    opcode                          owner          name

@@ -24,7 +24,7 @@ class DataClassGenerateInterceptorExtension(
   override fun interceptClassBuilderFactory(
       interceptedFactory: ClassBuilderFactory,
       bindingContext: BindingContext,
-      diagnostics: DiagnosticSink
+      diagnostics: DiagnosticSink,
   ): ClassBuilderFactory {
     return object : ClassBuilderFactory by interceptedFactory {
       override fun newClassBuilder(origin: JvmDeclarationOrigin): ClassBuilder =

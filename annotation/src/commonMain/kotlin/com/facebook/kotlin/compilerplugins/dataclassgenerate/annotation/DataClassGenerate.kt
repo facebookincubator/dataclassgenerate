@@ -11,7 +11,7 @@ enum class Mode {
   /** Express an intent to keep/generate a method(s) DataClassGenerate. */
   KEEP,
   /** Express an intent to omit method(s) generation. */
-  OMIT
+  OMIT,
 }
 
 @Target(AnnotationTarget.CLASS)
@@ -49,5 +49,5 @@ enum class Mode {
  */
 annotation class DataClassGenerate(
     @get:JvmName("toString_uniqueJvmName") val toString: Mode = Mode.OMIT,
-    val equalsHashCode: Mode = Mode.KEEP
+    val equalsHashCode: Mode = Mode.KEEP,
 )

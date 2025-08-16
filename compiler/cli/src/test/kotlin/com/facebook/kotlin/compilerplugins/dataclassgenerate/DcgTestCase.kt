@@ -38,7 +38,7 @@ open class DcgTestCase {
 
     private fun makeCompilationContext(
         code: Array<out SourceFile>,
-        dcgConfig: DcgTestConfiguration
+        dcgConfig: DcgTestConfiguration,
     ): KotlinCompilation =
         KotlinCompilation().apply {
           sources = code.asList()
@@ -50,14 +50,17 @@ open class DcgTestCase {
 
     val DEFAULT_DCG_CONFIG =
         DcgTestConfiguration(
-            enabled = true, pluginMode = PluginMode.EXPLICIT, generateSuperClass = true)
+            enabled = true,
+            pluginMode = PluginMode.EXPLICIT,
+            generateSuperClass = true,
+        )
   }
 }
 
 data class DcgTestConfiguration(
     val enabled: Boolean,
     val pluginMode: PluginMode,
-    val generateSuperClass: Boolean
+    val generateSuperClass: Boolean,
 ) {
   internal fun asCliOptions(): List<PluginOption> {
     val pluginId = DataClassGenerateCommandLineProcessor().pluginId
@@ -65,13 +68,18 @@ data class DcgTestConfiguration(
         PluginOption(
             pluginId,
             CompilerConfigurationProperties.ENABLED.cliOption.optionName,
-            enabled.toString()),
+            enabled.toString(),
+        ),
         PluginOption(
-            pluginId, CompilerConfigurationProperties.MODE.cliOption.optionName, pluginMode.name),
+            pluginId,
+            CompilerConfigurationProperties.MODE.cliOption.optionName,
+            pluginMode.name,
+        ),
         PluginOption(
             pluginId,
             CompilerConfigurationProperties.GENERATE_SUPER_CLASS.cliOption.optionName,
-            generateSuperClass.toString()),
+            generateSuperClass.toString(),
+        ),
     )
   }
 }

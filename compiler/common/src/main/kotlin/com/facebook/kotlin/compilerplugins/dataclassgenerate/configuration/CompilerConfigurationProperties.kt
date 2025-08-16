@@ -15,16 +15,19 @@ object CompilerConfigurationProperties {
       CompilerConfigurationProperty(
           CliOption("enabled", "<true | false>", "whether plugin is enabled", required = false),
           CompilerConfigurationKey("enabled"),
-          true)
+          true,
+      )
   val MODE =
       CompilerConfigurationProperty(
           CliOption(
               "mode",
               PluginMode.values().joinToString(prefix = "<", postfix = ">", separator = " | "),
               "defines plugin mode, check PluginMode.kt enum for more details}",
-              required = false),
+              required = false,
+          ),
           CompilerConfigurationKey("mode"),
-          PluginMode.EXPLICIT)
+          PluginMode.EXPLICIT,
+      )
 
   val GENERATE_SUPER_CLASS =
       CompilerConfigurationProperty(
@@ -32,9 +35,11 @@ object CompilerConfigurationProperties {
               "generateSuperClass",
               "<true | false>",
               "whether a super class should be generated for appropriate data classes",
-              required = false),
+              required = false,
+          ),
           CompilerConfigurationKey("generateSuperClass"),
-          true)
+          true,
+      )
   val all
     get() = listOf(ENABLED, MODE, GENERATE_SUPER_CLASS)
 }

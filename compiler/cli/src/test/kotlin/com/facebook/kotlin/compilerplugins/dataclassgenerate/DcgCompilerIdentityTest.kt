@@ -52,7 +52,8 @@ class DcgCompilerIdentityTest : DcgTestCase() {
         | open class Base
         | data class SampleWithSuper(val a: Int) : Base()
         """
-                .trimMargin())
+                .trimMargin(),
+        )
 
     @BeforeClass
     @JvmStatic
@@ -279,7 +280,8 @@ private val DCG_ANNOTATION =
       |     val equalsHashCode: Mode = Mode.KEEP
       | )
       """
-            .trimMargin())
+            .trimMargin(),
+    )
 
 private const val DCG_SUPER =
     "com/facebook/kotlin/compilerplugins/dataclassgenerate/superclass/DataClassSuper"

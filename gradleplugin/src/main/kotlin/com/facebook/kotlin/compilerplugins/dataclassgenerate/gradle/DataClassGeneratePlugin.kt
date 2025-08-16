@@ -23,7 +23,10 @@ class DataClassGeneratePlugin : KotlinCompilerPluginSupportPlugin {
 
   override fun getPluginArtifact() =
       SubpluginArtifact(
-          "com.facebook.kotlin.compilerplugins.dataclassgenerate", "cli", "$dcgVersion")
+          "com.facebook.kotlin.compilerplugins.dataclassgenerate",
+          "cli",
+          "$dcgVersion",
+      )
 
   override fun isApplicable(kotlinCompilation: KotlinCompilation<*>): Boolean {
     return kotlinCompilation.target.project.plugins.hasPlugin(DataClassGeneratePlugin::class.java)
@@ -50,7 +53,10 @@ class DataClassGeneratePlugin : KotlinCompilerPluginSupportPlugin {
           SubpluginOption(key = "enabled", value = extension.enabled.get().toString()),
           SubpluginOption(key = "mode", value = extension.mode.get().toString()),
           SubpluginOption(
-              key = "generateSuperClass", value = extension.generateSuperClass.get().toString()))
+              key = "generateSuperClass",
+              value = extension.generateSuperClass.get().toString(),
+          ),
+      )
     }
   }
 }

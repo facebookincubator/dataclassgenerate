@@ -21,7 +21,7 @@ class DcgDumpClassVisitor(val dcgDump: DcgDump) : ClassVisitor(ASM5) {
       name: String,
       desc: String,
       signature: String?,
-      exceptions: Array<out String>?
+      exceptions: Array<out String>?,
   ): MethodVisitor {
     val original = super.visitMethod(access, name, desc, signature, exceptions)
     val methodContextDumper =
@@ -43,7 +43,7 @@ class DcgDumpClassVisitor(val dcgDump: DcgDump) : ClassVisitor(ASM5) {
       name: String,
       signature: String?,
       superName: String,
-      interfaces: Array<out String>
+      interfaces: Array<out String>,
   ) {
     dcgDump.superClass = superName
   }

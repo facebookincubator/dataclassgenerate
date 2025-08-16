@@ -26,7 +26,7 @@ class DataClassGenerateCommandLineProcessor : CommandLineProcessor {
   override fun processOption(
       option: AbstractCliOption,
       value: String,
-      configuration: CompilerConfiguration
+      configuration: CompilerConfiguration,
   ) {
     when (option) {
       ENABLED.cliOption -> configuration.put(ENABLED.configurationKey, value.toBoolean())

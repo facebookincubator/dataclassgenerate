@@ -58,7 +58,7 @@ class DataClassGenerateBuilder(
       name: String,
       signature: String?,
       superName: String,
-      interfaces: Array<out String>
+      interfaces: Array<out String>,
   ) {
     var effectiveSuperName = superName
     // K1 handling
@@ -99,7 +99,8 @@ class DataClassGenerateBuilder(
         name,
         signature,
         effectiveSuperName,
-        interfaces)
+        interfaces,
+    )
   }
 
   override fun newMethod(
@@ -108,7 +109,7 @@ class DataClassGenerateBuilder(
       name: String,
       desc: String,
       signature: String?,
-      exceptions: Array<out String>?
+      exceptions: Array<out String>?,
   ): MethodVisitor {
     val originalVisitor = super.newMethod(origin, access, name, desc, signature, exceptions)
     if (origin.isDataClass() && !origin.isLikelyMethodOfSyntheticClass()) {
@@ -177,19 +178,19 @@ class DataClassGenerateBuilder(
 
 fun generateStrictModeViolationMessage(fqName: FqName?): String =
     """
-           You are running DataClassGenerate compiler plugin in a STRICT mode.
-           But $fqName is not annotated with @DataClassGenerate.
+     You are running DataClassGenerate compiler plugin in a STRICT mode.
+     But $fqName is not annotated with @DataClassGenerate.
 
-           Replace $fqName with @DataClassGenerate(toString=Mode.OMIT, equalsHashCode=Mode.KEEP)
-           - If $fqName does not need a `toString()` method use `toString=Mode.OMIT`
-           - If $fqName does not need `equals()` and hashCode()` use `equalsHashCode=Mode.OMIT` or
-           consider replacing it with a regular class.
+     Replace $fqName with @DataClassGenerate(toString=Mode.OMIT, equalsHashCode=Mode.KEEP)
+     - If $fqName does not need a `toString()` method use `toString=Mode.OMIT`
+     - If $fqName does not need `equals()` and hashCode()` use `equalsHashCode=Mode.OMIT` or
+     consider replacing it with a regular class.
 
-           Read more:
-           1. What is DataClassGenerate? - https://fburl.com/dataclassgenerate_wiki
-           2. How to configure @DataClassGenerate annotation? - https://fburl.com/dataclassgenerate
-           3. What is STRICT mode? - https://fburl.com/dataclassgenerate_mode
-          """
+     Read more:
+     1. What is DataClassGenerate? - https://fburl.com/dataclassgenerate_wiki
+     2. How to configure @DataClassGenerate annotation? - https://fburl.com/dataclassgenerate
+     3. What is STRICT mode? - https://fburl.com/dataclassgenerate_mode
+    """
         .trimIndent()
 
 class DataClassGenerateStrictModeViolationException(message: String) : RuntimeException(message)

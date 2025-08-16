@@ -14,7 +14,7 @@ import org.jetbrains.kotlin.config.CompilerConfigurationKey
 class CompilerConfigurationProperty<T>(
     val cliOption: CliOption,
     val configurationKey: CompilerConfigurationKey<T>,
-    val default: T?
+    val default: T?,
 ) {
   init {
     if (default == null) require(cliOption.required)

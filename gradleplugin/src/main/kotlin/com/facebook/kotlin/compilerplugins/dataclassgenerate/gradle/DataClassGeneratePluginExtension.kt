@@ -50,5 +50,5 @@ enum class DataClassGenerateMode {
    * `equals` and `hashCode`. @DataClassGenerate(toString = Mode.KEEP, equalsHashCode = Mode.OMIT)
    * data class A(val i: Int)
    */
-  IMPLICIT
+  IMPLICIT,
 }
