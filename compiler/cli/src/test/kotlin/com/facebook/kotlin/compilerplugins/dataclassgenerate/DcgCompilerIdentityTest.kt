@@ -74,21 +74,24 @@ class DcgCompilerIdentityTest : DcgTestCase() {
               """
                 ,     INVOKEVIRTUAL java/lang/StringBuilder.append (Ljava/lang/String;)Ljava/lang/StringBuilder;
               """
-                  .trimIndent())
+                  .trimIndent()
+          )
 
       assertThat(hashCodeDeclaration)
           .containsSubsequence(
               """
                 ,     INVOKEVIRTUAL java/lang/String.hashCode ()I
               """
-                  .trimIndent())
+                  .trimIndent()
+          )
 
       assertThat(equalsDeclaration)
           .containsSubsequence(
               """
                 ,     INVOKESTATIC kotlin/jvm/internal/Intrinsics.areEqual (Ljava/lang/Object;Ljava/lang/Object;)Z
               """
-                  .trimIndent())
+                  .trimIndent()
+          )
     }
 
     with(k1DcgMap["NonAnnotatedDataClass.class"]!!) { verify() }
@@ -105,21 +108,24 @@ class DcgCompilerIdentityTest : DcgTestCase() {
                 ,     INVOKESPECIAL java/lang/Object.toString ()Ljava/lang/String;
                 ,     ARETURN
               """
-                  .trimIndent())
+                  .trimIndent()
+          )
 
       assertThat(hashCodeDeclaration)
           .containsSubsequence(
               """
             ,     INVOKEVIRTUAL java/lang/String.hashCode ()I
           """
-                  .trimIndent())
+                  .trimIndent()
+          )
 
       assertThat(equalsDeclaration)
           .containsSubsequence(
               """
             ,     INVOKESTATIC kotlin/jvm/internal/Intrinsics.areEqual (Ljava/lang/Object;Ljava/lang/Object;)Z
           """
-                  .trimIndent())
+                  .trimIndent()
+          )
     }
 
     with(k1DcgMap["SampleDataClass.class"]!!) { verify() }
@@ -136,7 +142,8 @@ class DcgCompilerIdentityTest : DcgTestCase() {
             ,     INVOKESPECIAL java/lang/Object.toString ()Ljava/lang/String;
             ,     ARETURN
           """
-                  .trimIndent())
+                  .trimIndent()
+          )
 
       assertThat(hashCodeDeclaration)
           .containsSubsequence(
@@ -144,7 +151,8 @@ class DcgCompilerIdentityTest : DcgTestCase() {
             ,     INVOKESPECIAL java/lang/Object.hashCode ()I
             ,     IRETURN
           """
-                  .trimIndent())
+                  .trimIndent()
+          )
 
       assertThat(equalsDeclaration)
           .containsSubsequence(
@@ -152,7 +160,8 @@ class DcgCompilerIdentityTest : DcgTestCase() {
             ,     INVOKESPECIAL java/lang/Object.equals (Ljava/lang/Object;)Z
             ,     IRETURN
           """
-                  .trimIndent())
+                  .trimIndent()
+          )
     }
     with(k1DcgMap["SampleDataClassGenerationOff.class"]!!) { verify() }
     with(k2DcgMap["SampleDataClassGenerationOff.class"]!!) { verify() }
@@ -167,7 +176,8 @@ class DcgCompilerIdentityTest : DcgTestCase() {
               """
             ,     INVOKEVIRTUAL java/lang/StringBuilder.append (Ljava/lang/String;)Ljava/lang/StringBuilder;
           """
-                  .trimIndent())
+                  .trimIndent()
+          )
 
       assertThat(hashCodeDeclaration)
           .containsSubsequence(
@@ -175,14 +185,16 @@ class DcgCompilerIdentityTest : DcgTestCase() {
             ,     INVOKEVIRTUAL java/lang/String.hashCode ()I
             ,     IRETURN
           """
-                  .trimIndent())
+                  .trimIndent()
+          )
 
       assertThat(equalsDeclaration)
           .containsSubsequence(
               """
             ,     INVOKESTATIC kotlin/jvm/internal/Intrinsics.areEqual (Ljava/lang/Object;Ljava/lang/Object;)Z
           """
-                  .trimIndent())
+                  .trimIndent()
+          )
     }
 
     with(k1DcgMap["SampleDataClassToString.class"]!!) { verify() }
@@ -199,7 +211,8 @@ class DcgCompilerIdentityTest : DcgTestCase() {
             ,     INVOKESPECIAL java/lang/Object.toString ()Ljava/lang/String;
             ,     ARETURN
           """
-                  .trimIndent())
+                  .trimIndent()
+          )
 
       assertThat(hashCodeDeclaration)
           .containsSubsequence(
@@ -207,14 +220,16 @@ class DcgCompilerIdentityTest : DcgTestCase() {
             ,     INVOKEVIRTUAL java/lang/String.hashCode ()I
             ,     IRETURN
           """
-                  .trimIndent())
+                  .trimIndent()
+          )
 
       assertThat(equalsDeclaration)
           .containsSubsequence(
               """
             ,     INVOKESTATIC kotlin/jvm/internal/Intrinsics.areEqual (Ljava/lang/Object;Ljava/lang/Object;)Z
           """
-                  .trimIndent())
+                  .trimIndent()
+          )
     }
 
     with(k1DcgMap["SampleDataClassEqualsHashcode.class"]!!) { verify() }
@@ -231,21 +246,24 @@ class DcgCompilerIdentityTest : DcgTestCase() {
               """
             ,     INVOKEVIRTUAL java/lang/StringBuilder.append (Ljava/lang/String;)Ljava/lang/StringBuilder;
           """
-                  .trimIndent())
+                  .trimIndent()
+          )
 
       assertThat(hashCodeDeclaration)
           .containsSubsequence(
               """
             ,     INVOKEVIRTUAL java/lang/String.hashCode ()I
           """
-                  .trimIndent())
+                  .trimIndent()
+          )
 
       assertThat(equalsDeclaration)
           .containsSubsequence(
               """
             ,     INVOKESTATIC kotlin/jvm/internal/Intrinsics.areEqual (Ljava/lang/Object;Ljava/lang/Object;)Z
           """
-                  .trimIndent())
+                  .trimIndent()
+          )
     }
     with(k1DcgMap["SampleDataClassToStringEqualsHashcode.class"]!!) { verify() }
     with(k2DcgMap["SampleDataClassToStringEqualsHashcode.class"]!!) { verify() }

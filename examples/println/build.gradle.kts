@@ -13,5 +13,6 @@ plugins {
 
 application {
   mainClass.set(
-      "com.facebook.kotlin.compilerplugins.dataclassgenerate.sample.DataClassGenerateSampleKt")
+      "com.facebook.kotlin.compilerplugins.dataclassgenerate.sample.DataClassGenerateSampleKt"
+  )
 }

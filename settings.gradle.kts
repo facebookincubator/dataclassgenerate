@@ -36,7 +36,8 @@ include(
     ":examples:optout",
     ":examples:println",
     ":examples:strict",
-    ":examples:superclass")
+    ":examples:superclass",
+)
 
 includeBuild("gradleplugin")
 

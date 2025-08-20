@@ -45,7 +45,8 @@ class DataClassGeneratePlugin : KotlinCompilerPluginSupportPlugin {
     if (extension.generateSuperClass.get()) {
       kotlinCompilation.dependencies {
         implementation(
-            "com.facebook.kotlin.compilerplugins.dataclassgenerate:superclass:$dcgVersion")
+            "com.facebook.kotlin.compilerplugins.dataclassgenerate:superclass:$dcgVersion"
+        )
       }
     }
     return project.provider {

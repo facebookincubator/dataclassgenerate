@@ -67,7 +67,8 @@ class DataClassGenerateBuilder(
       if (originElement.isData()) {
         if (mode == PluginMode.STRICT && !originElement.isAnnotatedWithDataClassGenerate()) {
           throw DataClassGenerateStrictModeViolationException(
-              generateStrictModeViolationMessage(originElement.fqName))
+              generateStrictModeViolationMessage(originElement.fqName)
+          )
         }
 
         if (!name.isLikelySynthetic()) {
@@ -82,7 +83,8 @@ class DataClassGenerateBuilder(
         if (originElement.isData && originElement.kind.isClass) {
           if (mode == PluginMode.STRICT && !originElement.isAnnotatedWithDataClassGenerate()) {
             throw DataClassGenerateStrictModeViolationException(
-                generateStrictModeViolationMessage(originElement.fqNameSafe))
+                generateStrictModeViolationMessage(originElement.fqNameSafe)
+            )
           }
 
           if (!name.isLikelySynthetic()) {

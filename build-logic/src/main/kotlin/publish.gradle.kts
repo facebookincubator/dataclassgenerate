@@ -36,7 +36,8 @@ publishing {
     artifactId = project.name
     pom {
       description.set(
-          "A Kotlin compiler plugin that addresses an Android APK size overhead from Kotlin data classes.")
+          "A Kotlin compiler plugin that addresses an Android APK size overhead from Kotlin data classes."
+      )
       name.set(project.name)
       url.set("https://github.com/facebookincubator/dataclassgenerate")
       licenses {

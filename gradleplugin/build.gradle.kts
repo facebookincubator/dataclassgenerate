@@ -69,14 +69,16 @@ val pluginVersionTask =
       doLast {
         val versionFile =
             file(
-                "$outputDir/com/facebook/kotlin/compilerplugins/dataclassgenerata/gradle/version.kt")
+                "$outputDir/com/facebook/kotlin/compilerplugins/dataclassgenerata/gradle/version.kt"
+            )
         versionFile.parentFile.mkdirs()
         versionFile.writeText(
             """// Generated file. Do not edit!
 package com.facebook.kotlin.compilerplugins.dataclassgenerate.gradle
 internal const val dcgVersion = "$version"
 """,
-            Charsets.UTF_8)
+            Charsets.UTF_8,
+        )
       }
     }
 
