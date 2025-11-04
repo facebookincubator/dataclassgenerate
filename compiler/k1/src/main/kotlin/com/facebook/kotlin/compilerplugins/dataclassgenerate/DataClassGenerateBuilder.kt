@@ -32,6 +32,9 @@ import org.jetbrains.kotlin.psi.KtClass
 import org.jetbrains.kotlin.resolve.descriptorUtil.fqNameSafe
 import org.jetbrains.kotlin.resolve.jvm.diagnostics.JvmDeclarationOrigin
 import org.jetbrains.org.objectweb.asm.MethodVisitor
+import org.jetbrains.org.objectweb.asm.signature.SignatureReader
+import org.jetbrains.org.objectweb.asm.signature.SignatureVisitor
+import org.jetbrains.org.objectweb.asm.signature.SignatureWriter
 
 const val GENERATED_SUPER =
     "com/facebook/kotlin/compilerplugins/dataclassgenerate/superclass/DataClassSuper"
@@ -61,6 +64,7 @@ class DataClassGenerateBuilder(
       interfaces: Array<out String>,
   ) {
     var effectiveSuperName = superName
+    var effectiveSignature = signature
     // K1 handling
     val originElement = declarationOrigin.element
     if (originElement is KtClass) {
@@ -71,8 +75,9 @@ class DataClassGenerateBuilder(
           )
         }
 
-        if (!name.isLikelySynthetic()) {
-          effectiveSuperName = adjustSuperClass(superName)
+        if (!name.isLikelySynthetic() && shouldOverrideSuperClass(superName)) {
+          effectiveSuperName = GENERATED_SUPER
+          effectiveSignature = rewriteSignature(signature)
         }
       }
     }
@@ -87,8 +92,9 @@ class DataClassGenerateBuilder(
             )
           }
 
-          if (!name.isLikelySynthetic()) {
-            effectiveSuperName = adjustSuperClass(superName)
+          if (!name.isLikelySynthetic() && shouldOverrideSuperClass(superName)) {
+            effectiveSuperName = GENERATED_SUPER
+            effectiveSignature = rewriteSignature(signature)
           }
         }
       }
@@ -99,7 +105,7 @@ class DataClassGenerateBuilder(
         version,
         access,
         name,
-        signature,
+        effectiveSignature,
         effectiveSuperName,
         interfaces,
     )
@@ -143,8 +149,37 @@ class DataClassGenerateBuilder(
   fun shouldOverrideSuperClass(superClassLiteral: String): Boolean =
       DataClassGenerateExt.generateSuperClass && superClassLiteral == OBJECT_LITERAL
 
-  fun adjustSuperClass(origin: String) =
-      if (shouldOverrideSuperClass(origin)) GENERATED_SUPER else origin
+  private fun rewriteSignature(signature: String?): String? {
+    // Note classes without generics have null signature.
+    if (signature == null) {
+      return null
+    }
+
+    val signatureReader = SignatureReader(signature)
+    val signatureWriter =
+        object : SignatureWriter() {
+          var nextClassTypeIsSuperclass = false
+
+          override fun visitSuperclass(): SignatureVisitor {
+            nextClassTypeIsSuperclass = true
+            return super.visitSuperclass()
+          }
+
+          override fun visitClassType(name: String) {
+            var remappedName = name
+            // Only remap the superclass, not any classes visited in formal types or interfaces.
+            if (nextClassTypeIsSuperclass) {
+              if (name == OBJECT_LITERAL) {
+                remappedName = GENERATED_SUPER
+              }
+              nextClassTypeIsSuperclass = false
+            }
+            super.visitClassType(remappedName)
+          }
+        }
+    signatureReader.accept(signatureWriter)
+    return signatureWriter.toString()
+  }
 
   private fun KtClass.isAnnotatedWithDataClassGenerate(): Boolean {
     return annotationEntries
