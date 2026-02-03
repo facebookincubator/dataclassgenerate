@@ -11,18 +11,17 @@ import javax.inject.Inject
 import org.gradle.api.model.ObjectFactory
 import org.gradle.api.provider.Property
 
-public abstract class DataClassGeneratePluginExtension @Inject constructor(objects: ObjectFactory) {
-  public val enabled: Property<Boolean> =
-      objects.property(Boolean::class.javaObjectType).convention(true)
+abstract class DataClassGeneratePluginExtension @Inject constructor(objects: ObjectFactory) {
+  val enabled: Property<Boolean> = objects.property(Boolean::class.javaObjectType).convention(true)
 
-  public val mode: Property<DataClassGenerateMode> =
+  val mode: Property<DataClassGenerateMode> =
       objects.property(DataClassGenerateMode::class.java).convention(DataClassGenerateMode.EXPLICIT)
 
   /**
    * Adds a marker super class [DataClassSuper] for suitable data classes to make them available for
    * [Redex Class Merging Optimization](https://github.com/facebook/redex/blob/main/docs/passes.md#classmergingpass).
    */
-  public val generateSuperClass: Property<Boolean> =
+  val generateSuperClass: Property<Boolean> =
       objects.property(Boolean::class.javaObjectType).convention(false)
 }
 
