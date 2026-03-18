@@ -12,7 +12,7 @@ import com.facebook.kotlin.compilerplugins.dataclassgenerate.annotation.Mode
 
 interface WrappingInterface {
   companion object {
-    val dummy = Any()
+    val dummy: Any = Any()
   }
 
   @DataClassGenerate(toString = Mode.KEEP, equalsHashCode = Mode.KEEP)
