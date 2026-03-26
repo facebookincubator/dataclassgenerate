@@ -16,11 +16,10 @@ import com.facebook.kotlin.compilerplugins.dataclassgenerate.configuration.Compi
 import com.facebook.kotlin.compilerplugins.dataclassgenerate.configuration.DataClassGenerateExt
 import com.facebook.kotlin.compilerplugins.dataclassgenerate.configuration.get
 import org.jetbrains.kotlin.codegen.extensions.ClassBuilderInterceptorExtension
-import org.jetbrains.kotlin.compiler.plugin.CompilerPluginRegistrar
 import org.jetbrains.kotlin.config.CompilerConfiguration
 
 @OptIn(org.jetbrains.kotlin.compiler.plugin.ExperimentalCompilerApi::class)
-class DataClassGenerateComponentRegistrar : CompilerPluginRegistrar() {
+class DataClassGenerateComponentRegistrar : DataClassGenerateComponentRegistrarBase() {
 
   override fun ExtensionStorage.registerExtensions(configuration: CompilerConfiguration) {
     if (configuration[ENABLED]) {
