@@ -61,6 +61,21 @@ class DataClassGenerateTest {
     assertThat(sampleDataClass.copy()).isEqualTo(sampleDataClass)
   }
 
+  @Test
+  fun `non-annotated data class toString is removed in implicit mode`() {
+    val nonAnnotated = NonAnnotatedDataClass("Sample")
+    assertThat(nonAnnotated.toString()).matches(nativeToStringRegex)
+  }
+
+  @Test
+  fun `non-annotated data class keeps equals and hashCode in implicit mode`() {
+    val nonAnnotated1 = NonAnnotatedDataClass("Sample")
+    val nonAnnotated2 = NonAnnotatedDataClass("Sample")
+
+    assertThat(nonAnnotated1).isEqualTo(nonAnnotated2)
+    assertThat(nonAnnotated1.hashCode()).isEqualTo(nonAnnotated2.hashCode())
+  }
+
   /** TODO: T81258596 think about plugin customisation for all possible explicit override cases. */
   @Test
   fun `respect explicit overrides`() {
