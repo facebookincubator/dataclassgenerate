@@ -213,22 +213,26 @@ class DataClassGenerateBuilder(
   }
 }
 
-fun generateStrictModeViolationMessage(fqName: FqName?): String =
-    """
-     You are running DataClassGenerate compiler plugin in a STRICT mode.
-     But $fqName is not annotated with @DataClassGenerate.
+fun generateStrictModeViolationMessage(fqName: FqName?): String {
+  val shortName = fqName?.shortName() ?: fqName
+  return """
+     You are running DataClassGenerate compiler plugin in a STRICT mode, but $fqName is not annotated with @DataClassGenerate.
 
-     Replace $fqName with @DataClassGenerate(toString=Mode.OMIT, equalsHashCode=Mode.KEEP)
-     - If $fqName does not need a `toString()` method use `toString=Mode.OMIT`
-     - If $fqName does not need `equals()` and hashCode()` use `equalsHashCode=Mode.OMIT` or
+     Replace $shortName with @DataClassGenerate(toString=Mode.OMIT, equalsHashCode=Mode.KEEP)
+     - If $shortName does not need a `toString()` method use `toString=Mode.OMIT`
+     - If $shortName does not need `equals()` and hashCode()` use `equalsHashCode=Mode.OMIT` or
      consider replacing it with a regular class.
+
+     Add the annotation dependency to your BUCK target:
+       fbandroid//java/com/facebook/kotlin/compilerplugins/dataclassgenerate/annotation:dataclassgenerate-annotation
 
      Read more:
      1. What is DataClassGenerate? - https://fburl.com/dataclassgenerate_wiki
      2. How to configure @DataClassGenerate annotation? - https://fburl.com/dataclassgenerate
      3. What is STRICT mode? - https://fburl.com/dataclassgenerate_mode
     """
-        .trimIndent()
+      .trimIndent()
+}
 
 class DataClassGenerateStrictModeViolationException(message: String) : RuntimeException(message)
 
