@@ -20,4 +20,6 @@ dataClassGenerate {
 dependencies {
   testImplementation(libs.junit)
   testImplementation(libs.assertj.core)
+  testImplementation(libs.ow2.asm)
+  testImplementation(libs.ow2.asmUtil)
 }

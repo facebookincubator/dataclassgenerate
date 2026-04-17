@@ -21,20 +21,14 @@ open class DcgTestCase {
         vararg srcs: SourceFile,
         dcgConfig: DcgTestConfiguration = DEFAULT_DCG_CONFIG,
     ): JvmCompilationResult {
-      return makeCompilationContext(srcs, dcgConfig).apply { supportsK2 = true }.compile()
+      return makeCompilationContext(srcs, dcgConfig).compile()
     }
 
+    // Kotlin 2.3 removed K1 entirely; keep the name for test-source compatibility but route to K2.
     fun compileWithK1(
         vararg srcs: SourceFile,
         dcgConfig: DcgTestConfiguration = DEFAULT_DCG_CONFIG,
-    ): JvmCompilationResult {
-      return makeCompilationContext(srcs, dcgConfig)
-          .apply {
-            languageVersion = "1.9"
-            supportsK2 = false
-          }
-          .compile()
-    }
+    ): JvmCompilationResult = compileWithK2(*srcs, dcgConfig = dcgConfig)
 
     private fun makeCompilationContext(
         code: Array<out SourceFile>,
