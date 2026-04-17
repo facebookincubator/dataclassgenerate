@@ -6,7 +6,7 @@
 #
 
 [versions]
-kotlin = "2.2.0"
+kotlin = "2.3.20"
 agp = "8.7.3"
 byte-buddy-agent = "1.12.18"
 ow2-asm = "9.4"
