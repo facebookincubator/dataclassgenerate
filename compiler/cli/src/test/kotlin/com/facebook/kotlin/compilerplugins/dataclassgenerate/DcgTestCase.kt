@@ -17,23 +17,11 @@ import com.tschuchort.compiletesting.SourceFile
 @OptIn(org.jetbrains.kotlin.compiler.plugin.ExperimentalCompilerApi::class)
 open class DcgTestCase {
   companion object {
-    fun compileWithK2(
+    fun compile(
         vararg srcs: SourceFile,
         dcgConfig: DcgTestConfiguration = DEFAULT_DCG_CONFIG,
     ): JvmCompilationResult {
-      return makeCompilationContext(srcs, dcgConfig).apply { supportsK2 = true }.compile()
-    }
-
-    fun compileWithK1(
-        vararg srcs: SourceFile,
-        dcgConfig: DcgTestConfiguration = DEFAULT_DCG_CONFIG,
-    ): JvmCompilationResult {
-      return makeCompilationContext(srcs, dcgConfig)
-          .apply {
-            languageVersion = "1.9"
-            supportsK2 = false
-          }
-          .compile()
+      return makeCompilationContext(srcs, dcgConfig).compile()
     }
 
     private fun makeCompilationContext(

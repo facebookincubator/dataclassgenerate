@@ -21,6 +21,11 @@ import org.jetbrains.kotlin.config.CompilerConfiguration
 @OptIn(org.jetbrains.kotlin.compiler.plugin.ExperimentalCompilerApi::class)
 class DataClassGenerateComponentRegistrar : DataClassGenerateComponentRegistrarBase() {
 
+  override val supportsK2: Boolean = true
+
+  // Only possible once we have min Kotlin version as 2.3.0
+  // override val pluginId: String = "com.facebook.kotlin.dataclassgenerate"
+
   override fun ExtensionStorage.registerExtensions(configuration: CompilerConfiguration) {
     if (configuration[ENABLED]) {
       DataClassGenerateExt.generateSuperClass = configuration[GENERATE_SUPER_CLASS]
@@ -30,7 +35,4 @@ class DataClassGenerateComponentRegistrar : DataClassGenerateComponentRegistrarB
       )
     }
   }
-
-  override val supportsK2
-    get() = true
 }

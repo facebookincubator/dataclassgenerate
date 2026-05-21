@@ -10,12 +10,15 @@
 /gentest/test.html
 .buck-java11
 
+# Gradle files
 .gradle
 
 gradle/wrapper/dists/*
 gradle/native/*
 gradle/daemon/*
 gradle/caches/*
+
+.kotlin/
 
 # Output files
 build/

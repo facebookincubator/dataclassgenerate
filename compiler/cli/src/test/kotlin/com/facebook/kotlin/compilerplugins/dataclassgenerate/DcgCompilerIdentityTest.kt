@@ -16,41 +16,40 @@ import org.junit.Test
 class DcgCompilerIdentityTest : DcgTestCase() {
 
   companion object {
-    private lateinit var k1DcgMap: Map<String, DcgDump>
-    private lateinit var k2DcgMap: Map<String, DcgDump>
+    private lateinit var dcgMap: Map<String, DcgDump>
 
     private val dataClasses =
         SourceFile.kotlin(
             "Container.kt",
             """
-            | package com.facebook.kotlin.compilerplugins.dataclassgenerate.examples
+            |package com.facebook.kotlin.compilerplugins.dataclassgenerate.examples
             |
-            | import com.facebook.kotlin.compilerplugins.dataclassgenerate.annotation.DataClassGenerate
-            | import com.facebook.kotlin.compilerplugins.dataclassgenerate.annotation.Mode.KEEP
-            | import com.facebook.kotlin.compilerplugins.dataclassgenerate.annotation.Mode.OMIT
+            |import com.facebook.kotlin.compilerplugins.dataclassgenerate.annotation.DataClassGenerate
+            |import com.facebook.kotlin.compilerplugins.dataclassgenerate.annotation.Mode.KEEP
+            |import com.facebook.kotlin.compilerplugins.dataclassgenerate.annotation.Mode.OMIT
             |
-            | data class NonAnnotatedDataClass(val str: String)
+            |data class NonAnnotatedDataClass(val str: String)
             |
-            | @DataClassGenerate
-            | data class SampleDataClassWithExplicitOverrides(val str: String) {
-            |   override fun toString() = "dummy"
-            |   override fun equals(other: Any?) = true
-            |   override fun hashCode() = 42
-            | }
+            |@DataClassGenerate
+            |data class SampleDataClassWithExplicitOverrides(val str: String) {
+            |  override fun toString() = "dummy"
+            |  override fun equals(other: Any?) = true
+            |  override fun hashCode() = 42
+            |}
             |
-            | @DataClassGenerate data class SampleDataClass(val str: String)
+            |@DataClassGenerate data class SampleDataClass(val str: String)
             |
-            | @DataClassGenerate(OMIT, OMIT) data class SampleDataClassGenerationOff(val str: String)
+            |@DataClassGenerate(OMIT, OMIT) data class SampleDataClassGenerationOff(val str: String)
             |
-            | @DataClassGenerate(toString = KEEP) data class SampleDataClassToString(val str: String)
+            |@DataClassGenerate(toString = KEEP) data class SampleDataClassToString(val str: String)
             |
-            | @DataClassGenerate(equalsHashCode = KEEP) data class SampleDataClassEqualsHashcode(val str: String)
+            |@DataClassGenerate(equalsHashCode = KEEP) data class SampleDataClassEqualsHashcode(val str: String)
             |
-            | @DataClassGenerate(KEEP, KEEP)
-            | data class SampleDataClassToStringEqualsHashcode(val a: Int, val b: String?)
+            |@DataClassGenerate(KEEP, KEEP)
+            |data class SampleDataClassToStringEqualsHashcode(val a: Int, val b: String?)
             |
-            | open class Base
-            | data class SampleWithSuper(val a: Int) : Base()
+            |open class Base
+            |data class SampleWithSuper(val a: Int) : Base()
             """
                 .trimMargin(),
         )
@@ -58,10 +57,8 @@ class DcgCompilerIdentityTest : DcgTestCase() {
     @BeforeClass
     @JvmStatic
     fun compile() {
-      val k1Compilation = compileWithK1(dataClasses, DCG_ANNOTATION)
-      val k2Compilation = compileWithK2(dataClasses, DCG_ANNOTATION)
-      k1DcgMap = k1Compilation.generatedFiles.asDcgMap()
-      k2DcgMap = k2Compilation.generatedFiles.asDcgMap()
+      val compilation = compile(dataClasses, DCG_ANNOTATION)
+      dcgMap = compilation.generatedFiles.asDcgMap()
     }
   }
 
@@ -94,8 +91,7 @@ class DcgCompilerIdentityTest : DcgTestCase() {
           )
     }
 
-    with(k1DcgMap["NonAnnotatedDataClass.class"]!!) { verify() }
-    with(k2DcgMap["NonAnnotatedDataClass.class"]!!) { verify() }
+    with(dcgMap.getValue("NonAnnotatedDataClass.class")) { verify() }
   }
 
   @Test
@@ -128,8 +124,7 @@ class DcgCompilerIdentityTest : DcgTestCase() {
           )
     }
 
-    with(k1DcgMap["SampleDataClass.class"]!!) { verify() }
-    with(k2DcgMap["SampleDataClass.class"]!!) { verify() }
+    with(dcgMap.getValue("SampleDataClass.class")) { verify() }
   }
 
   @Test
@@ -163,8 +158,7 @@ class DcgCompilerIdentityTest : DcgTestCase() {
                   .trimIndent()
           )
     }
-    with(k1DcgMap["SampleDataClassGenerationOff.class"]!!) { verify() }
-    with(k2DcgMap["SampleDataClassGenerationOff.class"]!!) { verify() }
+    with(dcgMap.getValue("SampleDataClassGenerationOff.class")) { verify() }
   }
 
   @Test
@@ -197,8 +191,7 @@ class DcgCompilerIdentityTest : DcgTestCase() {
           )
     }
 
-    with(k1DcgMap["SampleDataClassToString.class"]!!) { verify() }
-    with(k2DcgMap["SampleDataClassToString.class"]!!) { verify() }
+    with(dcgMap.getValue("SampleDataClassToString.class")) { verify() }
   }
 
   @Test
@@ -232,8 +225,7 @@ class DcgCompilerIdentityTest : DcgTestCase() {
           )
     }
 
-    with(k1DcgMap["SampleDataClassEqualsHashcode.class"]!!) { verify() }
-    with(k2DcgMap["SampleDataClassEqualsHashcode.class"]!!) { verify() }
+    with(dcgMap.getValue("SampleDataClassEqualsHashcode.class")) { verify() }
   }
 
   @Test
@@ -265,8 +257,7 @@ class DcgCompilerIdentityTest : DcgTestCase() {
                   .trimIndent()
           )
     }
-    with(k1DcgMap["SampleDataClassToStringEqualsHashcode.class"]!!) { verify() }
-    with(k2DcgMap["SampleDataClassToStringEqualsHashcode.class"]!!) { verify() }
+    with(dcgMap.getValue("SampleDataClassToStringEqualsHashcode.class")) { verify() }
   }
 
   @Test
@@ -275,8 +266,7 @@ class DcgCompilerIdentityTest : DcgTestCase() {
       assertThat(superClass).isNotEqualTo(DCG_SUPER)
     }
 
-    with(k1DcgMap["SampleWithSuper.class"]!!) { verify() }
-    with(k2DcgMap["SampleWithSuper.class"]!!) { verify() }
+    with(dcgMap.getValue("SampleWithSuper.class")) { verify() }
   }
 }
 
