@@ -63,5 +63,7 @@ fun dumpClassFileAbi(classFile: File): DcgDump {
   return dump
 }
 
-fun Collection<File>.asDcgMap(): Map<String, DcgDump> =
-    filter { it.name.endsWith(".class") }.associate { it.name to dumpClassFileAbi(it) }
+fun Collection<File>.asDcgMap(): Map<String, DcgDump> = filter {
+  it.name.endsWith(".class")
+}
+    .associate { it.name to dumpClassFileAbi(it) }
