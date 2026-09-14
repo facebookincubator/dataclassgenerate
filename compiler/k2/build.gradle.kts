@@ -21,7 +21,7 @@ java {
 dependencies {
   implementation(project(":annotation"))
   implementation(project(":compiler:common"))
-  compileOnly(libs.kotlin.compilerEmbeddable)
+  compileOnly("org.jetbrains.kotlin:kotlin-compiler-embeddable:2.4.0")
 
-  testImplementation(libs.kotlin.compilerEmbeddable)
+  testImplementation("org.jetbrains.kotlin:kotlin-compiler-embeddable:2.4.0")
 }
