@@ -17,7 +17,9 @@ class CompilerConfigurationProperty<T>(
     val default: T?,
 ) {
   init {
-    if (default == null) require(cliOption.required)
+    if (default == null) {
+      require(cliOption.required)
+    }
   }
 }
 
