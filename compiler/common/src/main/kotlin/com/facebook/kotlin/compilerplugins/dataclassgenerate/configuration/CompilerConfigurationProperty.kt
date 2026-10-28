@@ -11,7 +11,7 @@ import org.jetbrains.kotlin.compiler.plugin.CliOption
 import org.jetbrains.kotlin.config.CompilerConfiguration
 import org.jetbrains.kotlin.config.CompilerConfigurationKey
 
-class CompilerConfigurationProperty<T>(
+class CompilerConfigurationProperty<T : Any>(
     val cliOption: CliOption,
     val configurationKey: CompilerConfigurationKey<T>,
     val default: T?,
@@ -23,6 +23,6 @@ class CompilerConfigurationProperty<T>(
   }
 }
 
-operator fun <T> CompilerConfiguration.get(property: CompilerConfigurationProperty<T>): T =
+operator fun <T : Any> CompilerConfiguration.get(property: CompilerConfigurationProperty<T>): T =
     if (property.default != null) get(property.configurationKey, property.default)
     else get(property.configurationKey)!!
