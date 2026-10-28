@@ -7,13 +7,13 @@
 
 package com.facebook.kotlin.compilerplugins.dataclassgenerate.examples
 
-import com.facebook.kotlin.compilerplugins.dataclassgenerate.GENERATED_SUPER
 import org.assertj.core.api.Assertions
 import org.junit.Test
 
 private const val SERIALIZABLE_DATA_CLASS_LITERAL =
     "com.facebook.kotlin.compilerplugins.dataclassgenerate.examples.SerializableDataClass"
-private val DCG_SUPER_LITERAL = GENERATED_SUPER.replace("/", ".")
+private const val DCG_SUPER_LITERAL =
+    "com.facebook.kotlin.compilerplugins.dataclassgenerate.superclass.DataClassSuper"
 
 class SerializableDataClassTest {
   @Test
