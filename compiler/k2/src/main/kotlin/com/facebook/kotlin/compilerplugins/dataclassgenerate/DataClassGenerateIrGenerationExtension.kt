@@ -8,6 +8,7 @@
 package com.facebook.kotlin.compilerplugins.dataclassgenerate
 
 import com.facebook.kotlin.compilerplugins.dataclassgenerate.annotation.Mode
+import com.facebook.kotlin.compilerplugins.dataclassgenerate.configuration.DataClassGenerateExt
 import com.facebook.kotlin.compilerplugins.dataclassgenerate.configuration.DataClassGenerateStrictModeViolationException
 import com.facebook.kotlin.compilerplugins.dataclassgenerate.configuration.PluginMode
 import com.facebook.kotlin.compilerplugins.dataclassgenerate.configuration.generateStrictModeViolationMessage
@@ -21,17 +22,23 @@ import org.jetbrains.kotlin.ir.builders.irCall
 import org.jetbrains.kotlin.ir.builders.irGet
 import org.jetbrains.kotlin.ir.builders.irReturn
 import org.jetbrains.kotlin.ir.declarations.IrClass
+import org.jetbrains.kotlin.ir.declarations.IrConstructor
 import org.jetbrains.kotlin.ir.declarations.IrDeclarationOrigin
 import org.jetbrains.kotlin.ir.declarations.IrModuleFragment
 import org.jetbrains.kotlin.ir.declarations.IrParameterKind
 import org.jetbrains.kotlin.ir.declarations.IrSimpleFunction
+import org.jetbrains.kotlin.ir.expressions.IrDelegatingConstructorCall
+import org.jetbrains.kotlin.ir.expressions.IrExpression
 import org.jetbrains.kotlin.ir.expressions.IrGetEnumValue
 import org.jetbrains.kotlin.ir.symbols.UnsafeDuringIrConstructionAPI
 import org.jetbrains.kotlin.ir.types.classOrNull
+import org.jetbrains.kotlin.ir.types.defaultType
+import org.jetbrains.kotlin.ir.types.isAny
 import org.jetbrains.kotlin.ir.util.classId
 import org.jetbrains.kotlin.ir.util.functions
 import org.jetbrains.kotlin.ir.util.parentAsClass
 import org.jetbrains.kotlin.ir.visitors.IrElementTransformerVoid
+import org.jetbrains.kotlin.ir.visitors.transformChildrenVoid
 import org.jetbrains.kotlin.name.ClassId
 import org.jetbrains.kotlin.name.FqName
 import org.jetbrains.kotlin.name.Name
@@ -50,6 +57,11 @@ private val ANNOTATION_CLASS_ID =
         FqName(
             "com.facebook.kotlin.compilerplugins.dataclassgenerate.annotation.DataClassGenerate",
         ),
+    )
+
+private val DATA_CLASS_SUPER_CLASS_ID =
+    ClassId.topLevel(
+        FqName("com.facebook.kotlin.compilerplugins.dataclassgenerate.superclass.DataClassSuper"),
     )
 
 private class DataClassGenerateTransformer(
@@ -103,7 +115,56 @@ private class DataClassGenerateTransformer(
       }
     }
 
+    injectSuperClass(declaration)
+
     return super.visitClass(declaration)
+  }
+
+  /**
+   * Data classes that extend `Any` get `DataClassSuper` as their superclass, like the class-builder
+   * path does for every data class. Runs after the `equals`/`hashCode`/`toString` rewrites, whose
+   * super calls keep targeting `Any`.
+   */
+  @OptIn(UnsafeDuringIrConstructionAPI::class)
+  private fun injectSuperClass(declaration: IrClass) {
+    if (!DataClassGenerateExt.generateSuperClass) return
+    // Like the class builder's `superClassLiteral == OBJECT_LITERAL`: the JVM superclass is
+    // `Object` when no supertype is a class other than `Any` (interface-only classes list no
+    // `Any` at all).
+    val superClassIndex =
+        declaration.superTypes.indexOfFirst { it.classOrNull?.owner?.kind == ClassKind.CLASS }
+    if (superClassIndex >= 0 && !declaration.superTypes[superClassIndex].isAny()) return
+    val superClass = pluginContext.findClassCompat(DATA_CLASS_SUPER_CLASS_ID) ?: return
+    val superConstructor =
+        superClass.owner.declarations.filterIsInstance<IrConstructor>().singleOrNull {
+          it.parameters.isEmpty()
+        } ?: return
+    declaration.superTypes =
+        if (superClassIndex >= 0) {
+          declaration.superTypes.toMutableList().apply {
+            set(superClassIndex, superClass.defaultType)
+          }
+        } else {
+          listOf(superClass.defaultType) + declaration.superTypes
+        }
+    val anyClass = pluginContext.irBuiltIns.anyClass
+    val retargetAnySuperCall =
+        object : IrElementTransformerVoid() {
+          // Anonymous objects and local classes keep their own `Any()` super calls.
+          override fun visitClass(declaration: IrClass): IrStatement = declaration
+
+          override fun visitDelegatingConstructorCall(
+              expression: IrDelegatingConstructorCall,
+          ): IrExpression {
+            if (expression.symbol.owner.parentAsClass.symbol == anyClass) {
+              expression.symbol = superConstructor.symbol
+            }
+            return super.visitDelegatingConstructorCall(expression)
+          }
+        }
+    for (constructor in declaration.declarations.filterIsInstance<IrConstructor>()) {
+      constructor.body?.transformChildrenVoid(retargetAnySuperCall)
+    }
   }
 
   @OptIn(UnsafeDuringIrConstructionAPI::class)

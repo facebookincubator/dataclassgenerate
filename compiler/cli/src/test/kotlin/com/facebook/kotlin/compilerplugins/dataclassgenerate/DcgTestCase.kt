@@ -9,10 +9,12 @@ package com.facebook.kotlin.compilerplugins.dataclassgenerate
 
 import com.facebook.kotlin.compilerplugins.dataclassgenerate.configuration.CompilerConfigurationProperties
 import com.facebook.kotlin.compilerplugins.dataclassgenerate.configuration.PluginMode
+import com.facebook.kotlin.compilerplugins.dataclassgenerate.superclass.DataClassSuper
 import com.tschuchort.compiletesting.JvmCompilationResult
 import com.tschuchort.compiletesting.KotlinCompilation
 import com.tschuchort.compiletesting.PluginOption
 import com.tschuchort.compiletesting.SourceFile
+import java.io.File
 
 @OptIn(org.jetbrains.kotlin.compiler.plugin.ExperimentalCompilerApi::class)
 open class DcgTestCase {
@@ -34,6 +36,9 @@ open class DcgTestCase {
           messageOutputStream = System.out
           commandLineProcessors = listOf(DataClassGenerateCommandLineProcessor())
           pluginOptions = dcgConfig.asCliOptions()
+          // Kotlin 2.4's IR extension resolves `DataClassSuper`; DCG targets export it.
+          classpaths =
+              listOf(File(DataClassSuper::class.java.protectionDomain.codeSource.location.toURI()))
         }
 
     val DEFAULT_DCG_CONFIG: DcgTestConfiguration = DcgTestConfiguration(

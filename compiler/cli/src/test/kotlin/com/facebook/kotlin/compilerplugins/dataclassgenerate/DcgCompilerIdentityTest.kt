@@ -7,16 +7,24 @@
 
 package com.facebook.kotlin.compilerplugins.dataclassgenerate
 
+import com.tschuchort.compiletesting.KotlinCompilation
 import com.tschuchort.compiletesting.SourceFile
+import java.io.File
+import java.io.PrintWriter
+import java.io.StringWriter
 import org.assertj.core.api.Assertions.assertThat
 import org.junit.BeforeClass
 import org.junit.Test
+import org.objectweb.asm.ClassReader
+import org.objectweb.asm.util.TraceClassVisitor
 
 @OptIn(org.jetbrains.kotlin.compiler.plugin.ExperimentalCompilerApi::class)
 class DcgCompilerIdentityTest : DcgTestCase() {
 
   companion object {
     private lateinit var dcgMap: Map<String, DcgDump>
+    private lateinit var classFiles: Map<String, File>
+    private lateinit var classLoader: ClassLoader
 
     private val dataClasses =
         SourceFile.kotlin(
@@ -50,6 +58,20 @@ class DcgCompilerIdentityTest : DcgTestCase() {
             |
             |open class Base
             |data class SampleWithSuper(val a: Int) : Base()
+            |
+            |class PlainClass(val a: Int)
+            |
+            |data object SampleDataObject
+            |
+            |@DataClassGenerate
+            |data class SampleWithClassesInConstructors(val r: Runnable) {
+            |  constructor() : this(object : Runnable { override fun run() {} })
+            |
+            |  constructor(times: Int) : this() {
+            |    class Local : Runnable { override fun run() {} }
+            |    repeat(times) { Local().run() }
+            |  }
+            |}
             """
                 .trimMargin(),
         )
@@ -58,7 +80,13 @@ class DcgCompilerIdentityTest : DcgTestCase() {
     @JvmStatic
     fun compile() {
       val compilation = compile(dataClasses, DCG_ANNOTATION)
+      assertThat(compilation.exitCode)
+          .describedAs(compilation.messages)
+          .isEqualTo(KotlinCompilation.ExitCode.OK)
       dcgMap = compilation.generatedFiles.asDcgMap()
+      classFiles =
+          compilation.generatedFiles.filter { it.name.endsWith(".class") }.associateBy { it.name }
+      classLoader = compilation.classLoader
     }
   }
 
@@ -268,6 +296,37 @@ class DcgCompilerIdentityTest : DcgTestCase() {
 
     with(dcgMap.getValue("SampleWithSuper.class")) { verify() }
   }
+
+  @Test
+  fun `plain class and data object keep Object as their superclass`() {
+    assertThat(dcgMap.getValue("PlainClass.class").superClass).isEqualTo(OBJECT)
+    assertThat(dcgMap.getValue("SampleDataObject.class").superClass).isEqualTo(OBJECT)
+  }
+
+  @Test
+  fun `classes declared in data class constructors keep their Object super call`() {
+    assertThat(dcgMap.getValue("SampleWithClassesInConstructors.class").superClass)
+        .isEqualTo(DCG_SUPER)
+    assertThat(classFiles.getValue("SampleWithClassesInConstructors.class").bytecode())
+        .contains("INVOKESPECIAL $DCG_SUPER.<init> ()V")
+
+    val nested = classFiles.filterKeys { it.startsWith("SampleWithClassesInConstructors$") }
+    assertThat(nested).hasSize(2)
+    for ((name, file) in nested) {
+      assertThat(dcgMap.getValue(name).superClass).isEqualTo(OBJECT)
+      assertThat(file.bytecode())
+          .contains("INVOKESPECIAL $OBJECT.<init> ()V")
+          .doesNotContain(DCG_SUPER)
+    }
+
+    // Instantiating loads and verifies the anonymous object and the local class.
+    classLoader
+        .loadClass(
+            "com.facebook.kotlin.compilerplugins.dataclassgenerate.examples.SampleWithClassesInConstructors",
+        )
+        .getConstructor(Int::class.javaPrimitiveType)
+        .newInstance(1)
+  }
 }
 
 private val DCG_ANNOTATION =
@@ -293,3 +352,11 @@ private val DCG_ANNOTATION =
 
 private const val DCG_SUPER =
     "com/facebook/kotlin/compilerplugins/dataclassgenerate/superclass/DataClassSuper"
+
+private const val OBJECT = "java/lang/Object"
+
+private fun File.bytecode(): String {
+  val text = StringWriter()
+  ClassReader(readBytes()).accept(TraceClassVisitor(PrintWriter(text)), 0)
+  return text.toString()
+}
