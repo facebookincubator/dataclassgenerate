@@ -14,6 +14,7 @@ import com.facebook.kotlin.compilerplugins.dataclassgenerate.configuration.gener
 import org.jetbrains.kotlin.backend.common.extensions.IrGenerationExtension
 import org.jetbrains.kotlin.backend.common.extensions.IrPluginContext
 import org.jetbrains.kotlin.backend.common.lower.DeclarationIrBuilder
+import org.jetbrains.kotlin.descriptors.ClassKind
 import org.jetbrains.kotlin.ir.IrStatement
 import org.jetbrains.kotlin.ir.builders.irBlockBody
 import org.jetbrains.kotlin.ir.builders.irCall
@@ -58,7 +59,10 @@ private class DataClassGenerateTransformer(
 
   @OptIn(UnsafeDuringIrConstructionAPI::class)
   override fun visitClass(declaration: IrClass): IrStatement {
-    if (!declaration.isData) return super.visitClass(declaration)
+    // Data objects are out of scope, matching the class-builder path (`isData && kind.isClass`).
+    if (!declaration.isData || declaration.kind != ClassKind.CLASS) {
+      return super.visitClass(declaration)
+    }
 
     val annotation =
         declaration.annotations.firstOrNull {
