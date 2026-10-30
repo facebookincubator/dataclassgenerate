@@ -22,7 +22,6 @@ sourceSets { main { resources { setSrcDirs(listOf("resources")) } } }
 
 dependencies {
   implementation(project(":compiler:common"))
-  implementation(project(":compiler:k1"))
   implementation(project(":compiler:k2"))
   compileOnly(libs.kotlin.compilerEmbeddable)
 

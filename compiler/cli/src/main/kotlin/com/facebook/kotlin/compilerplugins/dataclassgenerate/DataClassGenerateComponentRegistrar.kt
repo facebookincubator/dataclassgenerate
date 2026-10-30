@@ -5,8 +5,6 @@
  * LICENSE file in the root directory of this source tree.
  */
 
-@file:Suppress("DEPRECATION_ERROR")
-
 package com.facebook.kotlin.compilerplugins.dataclassgenerate
 
 import com.facebook.kotlin.compilerplugins.dataclassgenerate.configuration.CompilerConfigurationProperties.ENABLED
@@ -25,13 +23,9 @@ class DataClassGenerateComponentRegistrar : DataClassGenerateComponentRegistrarB
   override fun ExtensionStorage.registerExtensions(configuration: CompilerConfiguration) {
     if (configuration[ENABLED]) {
       DataClassGenerateExt.generateSuperClass = configuration[GENERATE_SUPER_CLASS]
-      val mode = configuration[MODE]
-
-      if (!registerK1ExtensionCompat(this, mode)) {
-        IrGenerationExtension.registerExtension(
-            DataClassGenerateIrGenerationExtension(mode),
-        )
-      }
+      IrGenerationExtension.registerExtension(
+          DataClassGenerateIrGenerationExtension(configuration[MODE]),
+      )
     }
   }
 }

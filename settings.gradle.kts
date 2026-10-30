@@ -26,7 +26,6 @@ include(
     ":annotation",
     ":compiler:cli",
     ":compiler:common",
-    ":compiler:k1",
     ":compiler:k2",
     ":superclass",
     ":examples:explicit",

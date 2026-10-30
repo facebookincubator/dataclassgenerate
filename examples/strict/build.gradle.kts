@@ -30,7 +30,6 @@ dependencies {
   implementation(libs.kotlin.serializationCoreJvm)
   implementation(libs.kotlin.serializationJsonJvm)
 
-  testImplementation(project(":compiler:k1"))
   testImplementation(libs.junit)
   testImplementation(libs.assertj.core)
 }
