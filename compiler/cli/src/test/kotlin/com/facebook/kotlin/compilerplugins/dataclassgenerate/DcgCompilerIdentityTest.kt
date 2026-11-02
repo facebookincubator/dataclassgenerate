@@ -7,6 +7,7 @@
 
 package com.facebook.kotlin.compilerplugins.dataclassgenerate
 
+import com.facebook.kotlin.compilerplugins.dataclassgenerate.configuration.PluginMode
 import com.tschuchort.compiletesting.KotlinCompilation
 import com.tschuchort.compiletesting.SourceFile
 import java.io.File
@@ -326,6 +327,29 @@ class DcgCompilerIdentityTest : DcgTestCase() {
         )
         .getConstructor(Int::class.javaPrimitiveType)
         .newInstance(1)
+  }
+
+  @Test
+  fun `strict mode reports unannotated data class`() {
+    val result = compile(
+        SourceFile.kotlin(
+            "Strict.kt",
+            """
+            |package com.facebook.kotlin.compilerplugins.dataclassgenerate.examples
+            |
+            |data class StrictViolation(val str: String)
+            """
+                .trimMargin(),
+        ),
+        dcgConfig =
+            DcgTestConfiguration(
+                enabled = true,
+                pluginMode = PluginMode.STRICT,
+                generateSuperClass = true,
+            ),
+    )
+    assertThat(result.exitCode).isNotEqualTo(KotlinCompilation.ExitCode.OK)
+    assertThat(result.messages).contains("STRICT mode")
   }
 }
 
