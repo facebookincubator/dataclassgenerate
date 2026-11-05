@@ -55,7 +55,7 @@ class DataClassGenerateBuilder(
       // We provide a corresponding data with a [declarationOrigin] field in this class.
       // Depending on https://youtrack.jetbrains.com/issue/KT-56814 resolution we should change
       // K2 behaviour
-      _doNotUseOnlyPassToSuperCall: DcgPsiElement?,
+      _doNotUseOnlyPassToSuperCall: com.intellij.psi.PsiElement?,
       version: Int,
       access: Int,
       name: String,
