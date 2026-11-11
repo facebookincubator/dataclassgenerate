@@ -42,8 +42,8 @@ class DcgDumpClassVisitor(val dcgDump: DcgDump) : ClassVisitor(ASM5) {
       access: Int,
       name: String,
       signature: String?,
-      superName: String,
-      interfaces: Array<out String>,
+      superName: String?,
+      interfaces: Array<out String>?,
   ) {
     dcgDump.superClass = superName
   }

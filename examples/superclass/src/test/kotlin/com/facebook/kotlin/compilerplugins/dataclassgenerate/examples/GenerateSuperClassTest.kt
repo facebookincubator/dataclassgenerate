@@ -41,10 +41,10 @@ class GenerateSuperClassTest {
           override fun visit(
               version: Int,
               access: Int,
-              name: String?,
+              name: String,
               signature: String?,
               superName: String?,
-              interfaces: Array<out String?>?,
+              interfaces: Array<out String>?,
           ) {
             SignatureReader(signature).accept(traceSignatureVisitor)
             super.visit(version, access, name, signature, superName, interfaces)
